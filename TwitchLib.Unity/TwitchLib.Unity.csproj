@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <PackageId>TwitchLib.Unity</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Unity wrapper system for TwitchLib</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>LuckyNoS7evin</Authors>
+    <Company>TwitchLib</Company>
+    <PackageIconUrl>https://colejelinek.com/dev/twitchlib.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Unity</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageReleaseNotes>Initial release of TwitchLib Unity component.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/TwitchLib/TwitchLib.Unity</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>twitch library unity3d unity dotnet c# csharp net standard 2.0</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
+    <DefineConstants>NET452</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+</Project>
