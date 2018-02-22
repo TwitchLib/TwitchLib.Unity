@@ -1,0 +1,6 @@
+[submodule "TwitchLib.Client"]
+	path = TwitchLib.Client
+	url = https://github.com/TwitchLib/TwitchLib.Client
+[submodule "TwitchLib.PubSub"]
+	path = TwitchLib.PubSub
+	url = https://github.com/TwitchLib/TwitchLib.PubSub
