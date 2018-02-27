@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using TwitchLib.Client;
 using TwitchLib.Client.Events.Client;
 
-public class TwitchClientUnity : TwitchClient
+public class TwitchClientUnity : TwitchClient, ITwitchClient
 {
     #region Events
     /// <summary>
