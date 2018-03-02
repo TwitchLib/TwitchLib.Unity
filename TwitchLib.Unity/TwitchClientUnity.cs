@@ -199,7 +199,7 @@ public class TwitchClientUnity : TwitchClient, ITwitchClient
     /// <summary>Fires when data is received from Twitch that is not able to be parsed.</summary>
     public new event EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
     #endregion
-    public TwitchClientUnity(ILogger<TwitchClientUnity> logger) :base(logger)
+    public TwitchClientUnity(ILogger<TwitchClientUnity> logger = null) :base(logger)
    {
         CoroutineHost.PrepareCrossThread();
        // client = new TwitchClient(credentials, channel, chatCommandIdentifier,whisperCommandIdentifier,logging,logger,autoReListenOnExceptions);
