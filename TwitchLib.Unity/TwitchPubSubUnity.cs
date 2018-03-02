@@ -53,7 +53,7 @@ public class TwitchPubSubUnity : TwitchPubSub, ITwitchPubSub
     public new event EventHandler<OnChannelSubscriptionArgs> OnChannelSubscription;
     #endregion
 
-    public TwitchPubSubUnity(EndPoint proxy = null) : base(null,null)
+    public TwitchPubSubUnity(EndPoint proxy = null) : base(null,proxy)
     {
         CoroutineHost.PrepareCrossThread();
         base.OnPubSubServiceConnected += ((object sender, EventArgs e) => { CoroutineHost.Host(() => OnPubSubServiceConnected?.Invoke(sender, e)); });
