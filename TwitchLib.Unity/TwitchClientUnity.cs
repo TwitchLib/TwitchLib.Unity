@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TwitchLib.Client;
 using TwitchLib.Client.Events.Client;
 
@@ -244,5 +244,6 @@ namespace TwitchLib.Unity
             base.OnFailureToReceiveJoinConfirmation += ((object sender, OnFailureToReceiveJoinConfirmationArgs e) => { CoroutineHost.Host(() => OnFailureToReceiveJoinConfirmation?.Invoke(sender, e)); });
             base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { CoroutineHost.Host(() => OnUnaccountedFor?.Invoke(sender, e)); });
         }
+    } 
+}
 
-    } }
