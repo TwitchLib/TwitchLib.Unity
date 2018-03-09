@@ -1,11 +1,15 @@
 using System;
 using TwitchLib.Client;
-using TwitchLib.Client.Events.Client;
+using TwitchLib.Client.Events;
+using TwitchLib.Client.Interfaces;
+using UnityEngine;
 
 namespace TwitchLib.Unity
 {
     public class TwitchClientUnity : TwitchClient, ITwitchClient
     {
+        private readonly GameObject _coroutineHost;
+
         #region Events
         /// <summary>
         /// Fires whenever a log write happens.
@@ -200,49 +204,52 @@ namespace TwitchLib.Unity
         /// <summary>Fires when data is received from Twitch that is not able to be parsed.</summary>
         public new event EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
         #endregion
+
         public TwitchClientUnity() : base(null)
         {
-            CoroutineHost.PrepareCrossThread();
-            // client = new TwitchClient(credentials, channel, chatCommandIdentifier,whisperCommandIdentifier,logging,logger,autoReListenOnExceptions);
-            base.OnLog += ((object sender, OnLogArgs e) => { CoroutineHost.Host(() => OnLog?.Invoke(sender, e)); });
-            base.OnConnected += ((object sender, OnConnectedArgs e) => { CoroutineHost.Host(() => OnConnected?.Invoke(sender, e)); });
-            base.OnJoinedChannel += ((object sender, OnJoinedChannelArgs e) => { CoroutineHost.Host(() => OnJoinedChannel?.Invoke(sender, e)); });
-            base.OnIncorrectLogin += ((object sender, OnIncorrectLoginArgs e) => { CoroutineHost.Host(() => OnIncorrectLogin?.Invoke(sender, e)); });
-            base.OnChannelStateChanged += ((object sender, OnChannelStateChangedArgs e) => { CoroutineHost.Host(() => OnChannelStateChanged?.Invoke(sender, e)); });
-            base.OnUserStateChanged += ((object sender, OnUserStateChangedArgs e) => { CoroutineHost.Host(() => OnUserStateChanged?.Invoke(sender, e)); });
-            base.OnMessageReceived += ((object sender, OnMessageReceivedArgs e) => { CoroutineHost.Host(() => OnMessageReceived?.Invoke(sender, e)); });
-            base.OnWhisperReceived += ((object sender, OnWhisperReceivedArgs e) => { CoroutineHost.Host(() => OnWhisperReceived?.Invoke(sender, e)); });
-            base.OnMessageSent += ((object sender, OnMessageSentArgs e) => { CoroutineHost.Host(() => OnMessageSent?.Invoke(sender, e)); });
-            base.OnWhisperSent += ((object sender, OnWhisperSentArgs e) => { CoroutineHost.Host(() => OnWhisperSent?.Invoke(sender, e)); });
-            base.OnChatCommandReceived += ((object sender, OnChatCommandReceivedArgs e) => { CoroutineHost.Host(() => OnChatCommandReceived?.Invoke(sender, e)); });
-            base.OnWhisperCommandReceived += ((object sender, OnWhisperCommandReceivedArgs e) => { CoroutineHost.Host(() => OnWhisperCommandReceived?.Invoke(sender, e)); });
-            base.OnUserJoined += ((object sender, OnUserJoinedArgs e) => { CoroutineHost.Host(() => OnUserJoined?.Invoke(sender, e)); });
-            base.OnModeratorJoined += ((object sender, OnModeratorJoinedArgs e) => { CoroutineHost.Host(() => OnModeratorJoined?.Invoke(sender, e)); });
-            base.OnModeratorLeft += ((object sender, OnModeratorLeftArgs e) => { CoroutineHost.Host(() => OnModeratorLeft?.Invoke(sender, e)); });
-            base.OnNewSubscriber += ((object sender, OnNewSubscriberArgs e) => { CoroutineHost.Host(() => OnNewSubscriber?.Invoke(sender, e)); });
-            base.OnReSubscriber += ((object sender, OnReSubscriberArgs e) => { CoroutineHost.Host(() => OnReSubscriber?.Invoke(sender, e)); });
-            base.OnHostLeft += ((object sender, EventArgs arg) => { CoroutineHost.Host(() => OnHostLeft(sender, arg)); });
-            base.OnExistingUsersDetected += ((object sender, OnExistingUsersDetectedArgs e) => { CoroutineHost.Host(() => OnExistingUsersDetected?.Invoke(sender, e)); });
-            base.OnUserLeft += ((object sender, OnUserLeftArgs e) => { CoroutineHost.Host(() => OnUserLeft?.Invoke(sender, e)); });
-            base.OnHostingStarted += ((object sender, OnHostingStartedArgs e) => { CoroutineHost.Host(() => OnHostingStarted?.Invoke(sender, e)); });
-            base.OnHostingStopped += ((object sender, OnHostingStoppedArgs e) => { CoroutineHost.Host(() => OnHostingStopped?.Invoke(sender, e)); });
-            base.OnDisconnected += ((object sender, OnDisconnectedArgs e) => { CoroutineHost.Host(() => OnDisconnected?.Invoke(sender, e)); });
-            base.OnConnectionError += ((object sender, OnConnectionErrorArgs e) => { CoroutineHost.Host(() => OnConnectionError?.Invoke(sender, e)); });
-            base.OnChatCleared += ((object sender, OnChatClearedArgs e) => { CoroutineHost.Host(() => OnChatCleared?.Invoke(sender, e)); });
-            base.OnUserTimedout += ((object sender, OnUserTimedoutArgs e) => { CoroutineHost.Host(() => OnUserTimedout?.Invoke(sender, e)); });
-            base.OnLeftChannel += ((object sender, OnLeftChannelArgs e) => { CoroutineHost.Host(() => OnLeftChannel?.Invoke(sender, e)); });
-            base.OnUserBanned += ((object sender, OnUserBannedArgs e) => { CoroutineHost.Host(() => OnUserBanned?.Invoke(sender, e)); });
-            base.OnModeratorsReceived += ((object sender, OnModeratorsReceivedArgs e) => { CoroutineHost.Host(() => OnModeratorsReceived?.Invoke(sender, e)); });
-            base.OnChatColorChanged += ((object sender, OnChatColorChangedArgs e) => { CoroutineHost.Host(() => OnChatColorChanged?.Invoke(sender, e)); });
-            base.OnSendReceiveData += ((object sender, OnSendReceiveDataArgs e) => { CoroutineHost.Host(() => OnSendReceiveData?.Invoke(sender, e)); });
-            base.OnNowHosting += ((object sender, OnNowHostingArgs e) => { CoroutineHost.Host(() => OnNowHosting?.Invoke(sender, e)); });
-            base.OnBeingHosted += ((object sender, OnBeingHostedArgs e) => { CoroutineHost.Host(() => OnBeingHosted?.Invoke(sender, e)); });
-            base.OnRaidNotification += ((object sender, OnRaidNotificationArgs e) => { CoroutineHost.Host(() => OnRaidNotification?.Invoke(sender, e)); });
-            base.OnGiftedSubscription += ((object sender, OnGiftedSubscriptionArgs e) => { CoroutineHost.Host(() => OnGiftedSubscription?.Invoke(sender, e)); });
-            base.OnRaidedChannelIsMatureAudience += ((object sender, EventArgs arg) => { CoroutineHost.Host(() => OnRaidedChannelIsMatureAudience(sender, arg)); });
-            base.OnRitualNewChatter += ((object sender, OnRitualNewChatterArgs e) => { CoroutineHost.Host(() => OnRitualNewChatter?.Invoke(sender, e)); });
-            base.OnFailureToReceiveJoinConfirmation += ((object sender, OnFailureToReceiveJoinConfirmationArgs e) => { CoroutineHost.Host(() => OnFailureToReceiveJoinConfirmation?.Invoke(sender, e)); });
-            base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { CoroutineHost.Host(() => OnUnaccountedFor?.Invoke(sender, e)); });
+            _coroutineHost = new GameObject("Coroutine Host");
+            _coroutineHost.AddComponent<UnityMainThreadDispatcher>();
+            UnityEngine.Object.DontDestroyOnLoad(_coroutineHost);
+                       
+            base.OnLog += ((object sender, OnLogArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnLog?.Invoke(sender, e)); });
+            base.OnConnected += ((object sender, OnConnectedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnConnected?.Invoke(sender, e)); });
+            base.OnJoinedChannel += ((object sender, OnJoinedChannelArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnJoinedChannel?.Invoke(sender, e)); });
+            base.OnIncorrectLogin += ((object sender, OnIncorrectLoginArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnIncorrectLogin?.Invoke(sender, e)); });
+            base.OnChannelStateChanged += ((object sender, OnChannelStateChangedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnChannelStateChanged?.Invoke(sender, e)); });
+            base.OnUserStateChanged += ((object sender, OnUserStateChangedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnUserStateChanged?.Invoke(sender, e)); });
+            base.OnMessageReceived += ((object sender, OnMessageReceivedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnMessageReceived?.Invoke(sender, e)); });
+            base.OnWhisperReceived += ((object sender, OnWhisperReceivedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnWhisperReceived?.Invoke(sender, e)); });
+            base.OnMessageSent += ((object sender, OnMessageSentArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnMessageSent?.Invoke(sender, e)); });
+            base.OnWhisperSent += ((object sender, OnWhisperSentArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnWhisperSent?.Invoke(sender, e)); });
+            base.OnChatCommandReceived += ((object sender, OnChatCommandReceivedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnChatCommandReceived?.Invoke(sender, e)); });
+            base.OnWhisperCommandReceived += ((object sender, OnWhisperCommandReceivedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnWhisperCommandReceived?.Invoke(sender, e)); });
+            base.OnUserJoined += ((object sender, OnUserJoinedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnUserJoined?.Invoke(sender, e)); });
+            base.OnModeratorJoined += ((object sender, OnModeratorJoinedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnModeratorJoined?.Invoke(sender, e)); });
+            base.OnModeratorLeft += ((object sender, OnModeratorLeftArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnModeratorLeft?.Invoke(sender, e)); });
+            base.OnNewSubscriber += ((object sender, OnNewSubscriberArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnNewSubscriber?.Invoke(sender, e)); });
+            base.OnReSubscriber += ((object sender, OnReSubscriberArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnReSubscriber?.Invoke(sender, e)); });
+            base.OnHostLeft += ((object sender, EventArgs arg) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnHostLeft(sender, arg)); });
+            base.OnExistingUsersDetected += ((object sender, OnExistingUsersDetectedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnExistingUsersDetected?.Invoke(sender, e)); });
+            base.OnUserLeft += ((object sender, OnUserLeftArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnUserLeft?.Invoke(sender, e)); });
+            base.OnHostingStarted += ((object sender, OnHostingStartedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnHostingStarted?.Invoke(sender, e)); });
+            base.OnHostingStopped += ((object sender, OnHostingStoppedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnHostingStopped?.Invoke(sender, e)); });
+            base.OnDisconnected += ((object sender, OnDisconnectedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnDisconnected?.Invoke(sender, e)); });
+            base.OnConnectionError += ((object sender, OnConnectionErrorArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnConnectionError?.Invoke(sender, e)); });
+            base.OnChatCleared += ((object sender, OnChatClearedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnChatCleared?.Invoke(sender, e)); });
+            base.OnUserTimedout += ((object sender, OnUserTimedoutArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnUserTimedout?.Invoke(sender, e)); });
+            base.OnLeftChannel += ((object sender, OnLeftChannelArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnLeftChannel?.Invoke(sender, e)); });
+            base.OnUserBanned += ((object sender, OnUserBannedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnUserBanned?.Invoke(sender, e)); });
+            base.OnModeratorsReceived += ((object sender, OnModeratorsReceivedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnModeratorsReceived?.Invoke(sender, e)); });
+            base.OnChatColorChanged += ((object sender, OnChatColorChangedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnChatColorChanged?.Invoke(sender, e)); });
+            base.OnSendReceiveData += ((object sender, OnSendReceiveDataArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnSendReceiveData?.Invoke(sender, e)); });
+            base.OnNowHosting += ((object sender, OnNowHostingArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnNowHosting?.Invoke(sender, e)); });
+            base.OnBeingHosted += ((object sender, OnBeingHostedArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnBeingHosted?.Invoke(sender, e)); });
+            base.OnRaidNotification += ((object sender, OnRaidNotificationArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnRaidNotification?.Invoke(sender, e)); });
+            base.OnGiftedSubscription += ((object sender, OnGiftedSubscriptionArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnGiftedSubscription?.Invoke(sender, e)); });
+            base.OnRaidedChannelIsMatureAudience += ((object sender, EventArgs arg) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnRaidedChannelIsMatureAudience(sender, arg)); });
+            base.OnRitualNewChatter += ((object sender, OnRitualNewChatterArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnRitualNewChatter?.Invoke(sender, e)); });
+            base.OnFailureToReceiveJoinConfirmation += ((object sender, OnFailureToReceiveJoinConfirmationArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnFailureToReceiveJoinConfirmation?.Invoke(sender, e)); });
+            base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { UnityMainThreadDispatcher.Instance().Enqueue(() => OnUnaccountedFor?.Invoke(sender, e)); });
         }
     } 
 }
