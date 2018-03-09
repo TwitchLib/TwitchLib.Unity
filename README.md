@@ -12,7 +12,7 @@ TwitchLib repository representing all code belonging to the implementation of Tw
 * **TwitchPubSubUnity**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
 
 ## Implementing
-Below are basic examples of how to utilize TwitchLib.Unity libraries including Api, Chat Client and PubSub. These are C# examples, but this library can also be used in Visual Basic.
+Below are basic examples of how to utilize TwitchLib.Unity libraries including Api, Chat Client and PubSub
 
 ### TwitchClientUnity
 ```csharp
