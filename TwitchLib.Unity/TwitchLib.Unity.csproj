@@ -24,12 +24,13 @@
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api\TwitchLib.Api.csproj" />
     <ProjectReference Include="..\TwitchLib.Client\TwitchLib.Client\TwitchLib.Client.csproj" />
+    <ProjectReference Include="..\TwitchLib.PubSub\TwitchLib.PubSub\TwitchLib.PubSub.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
-      <HintPath>..\UnityEngine.dll</HintPath>
-      <Private>false</Private>
+      <HintPath>..\..\..\Program Files\Unity 2018.1.0b2\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
