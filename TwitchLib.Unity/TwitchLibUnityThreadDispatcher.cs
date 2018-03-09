@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TwitchLib.Unity
 {
-    public class UnityMainThreadDispatcher : MonoBehaviour
+    public class TwitchLibUnityThreadDispatcher : MonoBehaviour
     {
 
         private static readonly Queue<Action> _executionQueue = new Queue<Action>();
@@ -52,25 +52,23 @@ namespace TwitchLib.Unity
             a();
             yield return null;
         }
-
-
-        private static UnityMainThreadDispatcher _instance = null;
+        
+        private static TwitchLibUnityThreadDispatcher _instance = null;
 
         public static bool Exists()
         {
             return _instance != null;
         }
 
-        public static UnityMainThreadDispatcher Instance()
+        public static TwitchLibUnityThreadDispatcher Instance()
         {
             if (!Exists())
             {
-                throw new Exception("UnityMainThreadDispatcher could not find the UnityMainThreadDispatcher object. Please ensure you have added the MainThreadExecutor Prefab to your scene.");
+                throw new Exception("TwitchLibUnityThreadDispatcher could not find the UnityMainThreadDispatcher object. Please ensure you have added the MainThreadExecutor Prefab to your scene.");
             }
             return _instance;
         }
-
-
+        
         void Awake()
         {
             if (_instance == null)
