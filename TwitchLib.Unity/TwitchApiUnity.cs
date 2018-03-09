@@ -15,18 +15,15 @@ namespace TwitchLib.Unity
 {
     public class TwitchApiUnity : TwitchAPI, ITwitchAPI
     {
-        private readonly GameObject _coroutineHost;
-
-        public event EventHandler OnRefreshAuthToken;
-        public event EventHandler<Api.Models.v5.Channels.Channel> OnGetChannelByID;
+        private readonly GameObject _threadDispatcher;
+		
         public TwitchApiUnity():base()
         {
             ServicePointManager.ServerCertificateValidationCallback = CertificateValidationMonoFix;
-            
 
-            _coroutineHost = new GameObject("Coroutine Host");
-            _coroutineHost.AddComponent<UnityMainThreadDispatcher>();
-            UnityEngine.Object.DontDestroyOnLoad(_coroutineHost);
+            _threadDispatcher = new GameObject("TwitchApiUnityDispatcher");
+            _threadDispatcher.AddComponent<TwitchLibUnityThreadDispatcher>();
+            UnityEngine.Object.DontDestroyOnLoad(_threadDispatcher);
 
         }
 
@@ -61,14 +58,13 @@ namespace TwitchLib.Unity
 
             return isOk;
         }
-     
-                   
+		
         public void Invoke<T>(Func<Task<T>> func, Action<T> action)
         {
             Task.Run(func).ContinueWith((x) =>
             {               
                 var value = x.Result;
-                UnityMainThreadDispatcher.Instance().Enqueue(() => action.Invoke(value));
+                TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => action.Invoke(value));
             });
         }
     }
