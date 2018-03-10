@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TwitchLib.Unity
 {
-    public class TwitchClientUnity : TwitchClient, ITwitchClient
+    public class Client : TwitchClient, ITwitchClient
     {
         private readonly GameObject _threadDispatcher;
 
@@ -205,51 +205,51 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
         #endregion
 
-        public TwitchClientUnity() : base(null)
+        public Client() : base(null)
         {
             _threadDispatcher = new GameObject("TwitchClientUnityDispatcher");
-            _threadDispatcher.AddComponent<TwitchLibUnityThreadDispatcher>();
+            _threadDispatcher.AddComponent<ThreadDispatcher>();
             UnityEngine.Object.DontDestroyOnLoad(_threadDispatcher);
                        
-            base.OnLog += ((object sender, OnLogArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnLog?.Invoke(sender, e)); });
-            base.OnConnected += ((object sender, OnConnectedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnConnected?.Invoke(sender, e)); });
-            base.OnJoinedChannel += ((object sender, OnJoinedChannelArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnJoinedChannel?.Invoke(sender, e)); });
-            base.OnIncorrectLogin += ((object sender, OnIncorrectLoginArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnIncorrectLogin?.Invoke(sender, e)); });
-            base.OnChannelStateChanged += ((object sender, OnChannelStateChangedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnChannelStateChanged?.Invoke(sender, e)); });
-            base.OnUserStateChanged += ((object sender, OnUserStateChangedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnUserStateChanged?.Invoke(sender, e)); });
-            base.OnMessageReceived += ((object sender, OnMessageReceivedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnMessageReceived?.Invoke(sender, e)); });
-            base.OnWhisperReceived += ((object sender, OnWhisperReceivedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnWhisperReceived?.Invoke(sender, e)); });
-            base.OnMessageSent += ((object sender, OnMessageSentArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnMessageSent?.Invoke(sender, e)); });
-            base.OnWhisperSent += ((object sender, OnWhisperSentArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnWhisperSent?.Invoke(sender, e)); });
-            base.OnChatCommandReceived += ((object sender, OnChatCommandReceivedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnChatCommandReceived?.Invoke(sender, e)); });
-            base.OnWhisperCommandReceived += ((object sender, OnWhisperCommandReceivedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnWhisperCommandReceived?.Invoke(sender, e)); });
-            base.OnUserJoined += ((object sender, OnUserJoinedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnUserJoined?.Invoke(sender, e)); });
-            base.OnModeratorJoined += ((object sender, OnModeratorJoinedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnModeratorJoined?.Invoke(sender, e)); });
-            base.OnModeratorLeft += ((object sender, OnModeratorLeftArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnModeratorLeft?.Invoke(sender, e)); });
-            base.OnNewSubscriber += ((object sender, OnNewSubscriberArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnNewSubscriber?.Invoke(sender, e)); });
-            base.OnReSubscriber += ((object sender, OnReSubscriberArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnReSubscriber?.Invoke(sender, e)); });
-            base.OnHostLeft += ((object sender, EventArgs arg) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnHostLeft(sender, arg)); });
-            base.OnExistingUsersDetected += ((object sender, OnExistingUsersDetectedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnExistingUsersDetected?.Invoke(sender, e)); });
-            base.OnUserLeft += ((object sender, OnUserLeftArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnUserLeft?.Invoke(sender, e)); });
-            base.OnHostingStarted += ((object sender, OnHostingStartedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnHostingStarted?.Invoke(sender, e)); });
-            base.OnHostingStopped += ((object sender, OnHostingStoppedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnHostingStopped?.Invoke(sender, e)); });
-            base.OnDisconnected += ((object sender, OnDisconnectedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnDisconnected?.Invoke(sender, e)); });
-            base.OnConnectionError += ((object sender, OnConnectionErrorArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnConnectionError?.Invoke(sender, e)); });
-            base.OnChatCleared += ((object sender, OnChatClearedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnChatCleared?.Invoke(sender, e)); });
-            base.OnUserTimedout += ((object sender, OnUserTimedoutArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnUserTimedout?.Invoke(sender, e)); });
-            base.OnLeftChannel += ((object sender, OnLeftChannelArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnLeftChannel?.Invoke(sender, e)); });
-            base.OnUserBanned += ((object sender, OnUserBannedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnUserBanned?.Invoke(sender, e)); });
-            base.OnModeratorsReceived += ((object sender, OnModeratorsReceivedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnModeratorsReceived?.Invoke(sender, e)); });
-            base.OnChatColorChanged += ((object sender, OnChatColorChangedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnChatColorChanged?.Invoke(sender, e)); });
-            base.OnSendReceiveData += ((object sender, OnSendReceiveDataArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnSendReceiveData?.Invoke(sender, e)); });
-            base.OnNowHosting += ((object sender, OnNowHostingArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnNowHosting?.Invoke(sender, e)); });
-            base.OnBeingHosted += ((object sender, OnBeingHostedArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnBeingHosted?.Invoke(sender, e)); });
-            base.OnRaidNotification += ((object sender, OnRaidNotificationArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnRaidNotification?.Invoke(sender, e)); });
-            base.OnGiftedSubscription += ((object sender, OnGiftedSubscriptionArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnGiftedSubscription?.Invoke(sender, e)); });
-            base.OnRaidedChannelIsMatureAudience += ((object sender, EventArgs arg) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnRaidedChannelIsMatureAudience(sender, arg)); });
-            base.OnRitualNewChatter += ((object sender, OnRitualNewChatterArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnRitualNewChatter?.Invoke(sender, e)); });
-            base.OnFailureToReceiveJoinConfirmation += ((object sender, OnFailureToReceiveJoinConfirmationArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnFailureToReceiveJoinConfirmation?.Invoke(sender, e)); });
-            base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => OnUnaccountedFor?.Invoke(sender, e)); });
+            base.OnLog += ((object sender, OnLogArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnLog?.Invoke(sender, e)); });
+            base.OnConnected += ((object sender, OnConnectedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnConnected?.Invoke(sender, e)); });
+            base.OnJoinedChannel += ((object sender, OnJoinedChannelArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnJoinedChannel?.Invoke(sender, e)); });
+            base.OnIncorrectLogin += ((object sender, OnIncorrectLoginArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnIncorrectLogin?.Invoke(sender, e)); });
+            base.OnChannelStateChanged += ((object sender, OnChannelStateChangedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnChannelStateChanged?.Invoke(sender, e)); });
+            base.OnUserStateChanged += ((object sender, OnUserStateChangedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnUserStateChanged?.Invoke(sender, e)); });
+            base.OnMessageReceived += ((object sender, OnMessageReceivedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnMessageReceived?.Invoke(sender, e)); });
+            base.OnWhisperReceived += ((object sender, OnWhisperReceivedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnWhisperReceived?.Invoke(sender, e)); });
+            base.OnMessageSent += ((object sender, OnMessageSentArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnMessageSent?.Invoke(sender, e)); });
+            base.OnWhisperSent += ((object sender, OnWhisperSentArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnWhisperSent?.Invoke(sender, e)); });
+            base.OnChatCommandReceived += ((object sender, OnChatCommandReceivedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnChatCommandReceived?.Invoke(sender, e)); });
+            base.OnWhisperCommandReceived += ((object sender, OnWhisperCommandReceivedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnWhisperCommandReceived?.Invoke(sender, e)); });
+            base.OnUserJoined += ((object sender, OnUserJoinedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnUserJoined?.Invoke(sender, e)); });
+            base.OnModeratorJoined += ((object sender, OnModeratorJoinedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnModeratorJoined?.Invoke(sender, e)); });
+            base.OnModeratorLeft += ((object sender, OnModeratorLeftArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnModeratorLeft?.Invoke(sender, e)); });
+            base.OnNewSubscriber += ((object sender, OnNewSubscriberArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnNewSubscriber?.Invoke(sender, e)); });
+            base.OnReSubscriber += ((object sender, OnReSubscriberArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnReSubscriber?.Invoke(sender, e)); });
+            base.OnHostLeft += ((object sender, EventArgs arg) => { ThreadDispatcher.Instance().Enqueue(() => OnHostLeft(sender, arg)); });
+            base.OnExistingUsersDetected += ((object sender, OnExistingUsersDetectedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnExistingUsersDetected?.Invoke(sender, e)); });
+            base.OnUserLeft += ((object sender, OnUserLeftArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnUserLeft?.Invoke(sender, e)); });
+            base.OnHostingStarted += ((object sender, OnHostingStartedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnHostingStarted?.Invoke(sender, e)); });
+            base.OnHostingStopped += ((object sender, OnHostingStoppedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnHostingStopped?.Invoke(sender, e)); });
+            base.OnDisconnected += ((object sender, OnDisconnectedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnDisconnected?.Invoke(sender, e)); });
+            base.OnConnectionError += ((object sender, OnConnectionErrorArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnConnectionError?.Invoke(sender, e)); });
+            base.OnChatCleared += ((object sender, OnChatClearedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnChatCleared?.Invoke(sender, e)); });
+            base.OnUserTimedout += ((object sender, OnUserTimedoutArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnUserTimedout?.Invoke(sender, e)); });
+            base.OnLeftChannel += ((object sender, OnLeftChannelArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnLeftChannel?.Invoke(sender, e)); });
+            base.OnUserBanned += ((object sender, OnUserBannedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnUserBanned?.Invoke(sender, e)); });
+            base.OnModeratorsReceived += ((object sender, OnModeratorsReceivedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnModeratorsReceived?.Invoke(sender, e)); });
+            base.OnChatColorChanged += ((object sender, OnChatColorChangedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnChatColorChanged?.Invoke(sender, e)); });
+            base.OnSendReceiveData += ((object sender, OnSendReceiveDataArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnSendReceiveData?.Invoke(sender, e)); });
+            base.OnNowHosting += ((object sender, OnNowHostingArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnNowHosting?.Invoke(sender, e)); });
+            base.OnBeingHosted += ((object sender, OnBeingHostedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnBeingHosted?.Invoke(sender, e)); });
+            base.OnRaidNotification += ((object sender, OnRaidNotificationArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnRaidNotification?.Invoke(sender, e)); });
+            base.OnGiftedSubscription += ((object sender, OnGiftedSubscriptionArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnGiftedSubscription?.Invoke(sender, e)); });
+            base.OnRaidedChannelIsMatureAudience += ((object sender, EventArgs arg) => { ThreadDispatcher.Instance().Enqueue(() => OnRaidedChannelIsMatureAudience(sender, arg)); });
+            base.OnRitualNewChatter += ((object sender, OnRitualNewChatterArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnRitualNewChatter?.Invoke(sender, e)); });
+            base.OnFailureToReceiveJoinConfirmation += ((object sender, OnFailureToReceiveJoinConfirmationArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnFailureToReceiveJoinConfirmation?.Invoke(sender, e)); });
+            base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnUnaccountedFor?.Invoke(sender, e)); });
         }
     } 
 }

@@ -13,16 +13,16 @@ using UnityEngine;
 
 namespace TwitchLib.Unity
 {
-    public class TwitchApiUnity : TwitchAPI, ITwitchAPI
+    public class Api : TwitchAPI, ITwitchAPI
     {
         private readonly GameObject _threadDispatcher;
 		
-        public TwitchApiUnity():base()
+        public Api():base()
         {
             ServicePointManager.ServerCertificateValidationCallback = CertificateValidationMonoFix;
 
             _threadDispatcher = new GameObject("TwitchApiUnityDispatcher");
-            _threadDispatcher.AddComponent<TwitchLibUnityThreadDispatcher>();
+            _threadDispatcher.AddComponent<ThreadDispatcher>();
             UnityEngine.Object.DontDestroyOnLoad(_threadDispatcher);
 
         }
@@ -64,7 +64,7 @@ namespace TwitchLib.Unity
             Task.Run(func).ContinueWith((x) =>
             {               
                 var value = x.Result;
-                TwitchLibUnityThreadDispatcher.Instance().Enqueue(() => action.Invoke(value));
+                ThreadDispatcher.Instance().Enqueue(() => action.Invoke(value));
             });
         }
     }
