@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452</TargetFrameworks>
+    <TargetFramework>net452</TargetFramework>
     <PackageId>TwitchLib.Unity</PackageId>
     <Version>1.0.0</Version>
     <Description>Unity wrapper system for TwitchLib</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>LuckyNoS7evin</Authors>
     <Company>TwitchLib</Company>
     <PackageIconUrl>https://colejelinek.com/dev/twitchlib.png</PackageIconUrl>
@@ -20,7 +20,15 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>RELEASE;NET452</DefineConstants>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="ILMerge" Version="2.14.1208" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
@@ -30,7 +38,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Program Files\Unity 2018.1.0b2\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\Assemblies\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="del $(OutDir)*.pdb&#xD;&#xA;..\packages\ILMerge.2.14.1208\tools\ilmerge /out:$(OutDir)TwitchLib.Unity.dll $(OutDir)TwitchLib.Unity.dll $(OutDir)Microsoft.Extensions.Logging.Abstractions.dll $(OutDir)Newtonsoft.Json.dll $(OutDir)Serilog.dll $(OutDir)Serilog.Extensions.Logging.dll $(OutDir)SuperSocket.ClientEngine.dll $(OutDir)TwitchLib.Api.dll $(OutDir)TwitchLib.Client.dll $(OutDir)TwitchLib.PubSub.dll $(OutDir)WebSocket4Net.dll&#xD;&#xA;del $(OutDir)Microsoft.Extensions.Logging.Abstractions.dll &#xD;&#xA;del $(OutDir)Newtonsoft.Json.dll&#xD;&#xA;del $(OutDir)Serilog.dll &#xD;&#xA;del $(OutDir)Serilog.Extensions.Logging.dll &#xD;&#xA;del $(OutDir)SuperSocket.ClientEngine.dll &#xD;&#xA;del $(OutDir)TwitchLib.Api.dll &#xD;&#xA;del $(OutDir)TwitchLib.Client.dll &#xD;&#xA;del $(OutDir)TwitchLib.PubSub.dll &#xD;&#xA;del $(OutDir)WebSocket4Net.dll&#xD;&#xA;del $(OutDir)UnityEngine.*" />
+  </Target>
 </Project>

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TwitchLib.Unity
 {
-    public class TwitchLibUnityThreadDispatcher : MonoBehaviour
+    public class ThreadDispatcher : MonoBehaviour
     {
 
         private static readonly Queue<Action> _executionQueue = new Queue<Action>();
@@ -53,14 +53,14 @@ namespace TwitchLib.Unity
             yield return null;
         }
         
-        private static TwitchLibUnityThreadDispatcher _instance = null;
+        private static ThreadDispatcher _instance = null;
 
         public static bool Exists()
         {
             return _instance != null;
         }
 
-        public static TwitchLibUnityThreadDispatcher Instance()
+        public static ThreadDispatcher Instance()
         {
             if (!Exists())
             {
