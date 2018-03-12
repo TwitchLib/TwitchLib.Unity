@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Net;
 using UnityEngine;
-using TwitchLib.Api;
-using TwitchLib.Api.Enums;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Services;
-using TwitchLib.Api.Services.Exceptions;
 using TwitchLib.Api.Services.Events.LiveStreamMonitor;
 
-namespace TwitchLib.Unity {
-    public class UnityLiveStreamMonitor : LiveStreamMonitor {
+namespace TwitchLib.Unity
+{
+    public class UnityLiveStreamMonitor : LiveStreamMonitor
+    {
         private readonly GameObject _threadDispatcher;
 
         #region EVENTS
@@ -27,8 +25,8 @@ namespace TwitchLib.Unity {
         public new event EventHandler<OnStreamsSetArgs> OnStreamsSet;
         #endregion
 
-        public UnityFollowerService(ITwitchAPI api, int checkIntervalSeconds = 60, bool checkStatusOnStart = true, bool invokeEventsOnStart = false) : base(api, checkIntervalSeconds, checkStatusOnStart, invokeEventsOnStart) {
-            _threadDispatcher = new GameObject("ThreadDispatcher");
+        public UnityLiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, bool checkStatusOnStart = true, bool invokeEventsOnStart = false) : base(api, checkIntervalSeconds, checkStatusOnStart, invokeEventsOnStart) {
+            _threadDispatcher = new GameObject("UnityLiveStreamMonitorThreadDispatcher");
             _threadDispatcher.AddComponent<ThreadDispatcher>();
             UnityEngine.Object.DontDestroyOnLoad(_threadDispatcher);
 
