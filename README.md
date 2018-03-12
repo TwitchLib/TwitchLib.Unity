@@ -7,14 +7,14 @@
 ## About 
 TwitchLib repository representing all code belonging to the implementation of TwitchLib for Unity. Maintained primarily by LuckyNoS7evin & GameDevCompany.
 
-* **TwitchClientUnity**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Helper methods also exist for replying to whispers or fetching moderator lists.
-* **TwitchAPIUnity**: Complete coverage of v3, v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
-* **TwitchPubSubUnity**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
+* **Client**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Helper methods also exist for replying to whispers or fetching moderator lists.
+* **Api**: Complete coverage of v3, v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams. Provides also service to check for new follows and if stream is up.
+* **PubSub**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
 
 ## Implementing
 Below are basic examples of how to utilize TwitchLib.Unity libraries including Api, Chat Client and PubSub
 
-### TwitchClientUnity
+### Chat Client for Unity
 ```csharp
 using UnityEngine;
 using TwitchLib.Unity;
@@ -22,7 +22,7 @@ using TwitchLib.Client.Models;
 
 public class TwitchClientExample : MonoBehaviour
 {
-    private TwitchClientUnity _client;
+    private Client _client;
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class TwitchClientExample : MonoBehaviour
         //Create Credentials instance
         ConnectionCredentials credentials = new ConnectionCredentials("{{USER_TO_CONNECT_AS}}", "{{ACCESS_TOKEN}}");
         //Create new instance of Chat Client
-        _client = new TwitchClientUnity();
+        _client = new Client();
         _client.Initialize(credentials, "{{CHANNEL_TO_CONNECT_TO}}");
         _client.OnMessageReceived += _client_OnMessageReceived; ;
         _client.Connect();
@@ -52,21 +52,21 @@ public class TwitchClientExample : MonoBehaviour
 }
 ```
 
-### TwitchApiUnity
+### Api for Unity
 ```csharp
 using UnityEngine;
 using TwitchLib.Unity;
 
 public class TwitchApiExample : MonoBehaviour
 {
-    private TwitchApiUnity _api;
+    private Api _api;
 
     void Start()
     {
         //Set to run in minimized mode
         Application.runInBackground = true;
         //Create new instance of Api
-        _api = new TwitchApiUnity();
+        _api = new Api();
         //Initialize your Api with credentials
         _api.InitializeAsync(Secrets.ClientId, Secrets.OAuth);
     }
@@ -93,21 +93,21 @@ public class TwitchApiExample : MonoBehaviour
 
 ```
 
-### TwitchPubSubUnity
+### PubSub for Unity
 ```csharp
 using UnityEngine;
 using TwitchLib.Unity;
 
 public class TwitchPubSubExample : MonoBehaviour
 {
-    private TwitchPubSubUnity _client;
+    private PubSub _client;
 
     void Start()
     {
         //Set to run in minimized mode
         Application.runInBackground = true;
         //Create new instance of PubSub Client
-        _client = new TwitchPubSubUnity();
+        _client = new PubSub();
         //Subscribe to Events
         _client.OnBitsReceived += _client_OnBitsReceived;
         _client.OnPubSubServiceConnected += _client_OnPubSubServiceConnected;
@@ -126,12 +126,6 @@ public class TwitchPubSubExample : MonoBehaviour
     private void _client_OnBitsReceived(object sender, TwitchLib.PubSub.Events.OnBitsReceivedArgs e)
     {
         //Do your bits logic here.
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
 }
