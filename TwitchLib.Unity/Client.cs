@@ -250,6 +250,8 @@ namespace TwitchLib.Unity
             base.OnRitualNewChatter += ((object sender, OnRitualNewChatterArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnRitualNewChatter?.Invoke(sender, e)); });
             base.OnFailureToReceiveJoinConfirmation += ((object sender, OnFailureToReceiveJoinConfirmationArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnFailureToReceiveJoinConfirmation?.Invoke(sender, e)); });
             base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnUnaccountedFor?.Invoke(sender, e)); });
+            base.OnSelfRaidError += ((object sender, EventArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnSelfRaidError?.Invoke(sender, e)); });
+            base.OnNoPermissionError += ((object sender, EventArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnNoPermissionError?.Invoke(sender, e)); });
         }
     } 
 }
