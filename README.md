@@ -46,7 +46,13 @@ public class TwitchClientExample : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _client.SendMessage("");   
+        //Don't call the client send message on every Update, 
+        //this is sample on how to call the client,
+        //not an example on how to code.
+        if(SomeConditionMet)
+        {
+            _client.SendMessage("");   
+        }
     }
 
 }
@@ -74,14 +80,19 @@ public class TwitchApiExample : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Do what you want here, however if you want to call the twitch API this can be done as follows. 
-        //The following example is the GetChannelVideos if you want to call any TwitchLib.Api
-        //endpoint replace the the following with your method call "_api.Channels.v5.GetChannelVideosAsync("{{CHANNEL_ID}}");"
-        _api.Invoke(
-            //Func<Task<ChannelVideos>>
-            () => { return _api.Channels.v5.GetChannelVideosAsync("14900522"); },
-            //Action<T>
-            GetChannelVideosCallback);
+        //Don't call the Api on every Update, this is sample on how to call the Api,
+        //this is not an example on how to code.
+        if(SomeConditionMet)
+        {
+            //Do what you want here, however if you want to call the twitch API this can be done as follows. 
+            //The following example is the GetChannelVideos if you want to call any TwitchLib.Api
+            //endpoint replace the the following with your method call "_api.Channels.v5.GetChannelVideosAsync("{{CHANNEL_ID}}");"
+            _api.Invoke(
+                //Func<Task<ChannelVideos>>
+                () => { return _api.Channels.v5.GetChannelVideosAsync("14900522"); },
+                //Action<T>
+                GetChannelVideosCallback);
+        }
     }
 
     private void GetChannelVideosCallback(TwitchLib.Api.Models.v5.Channels.ChannelVideos e)
