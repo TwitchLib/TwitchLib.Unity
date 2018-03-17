@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <PackageId>TwitchLib.Unity</PackageId>
-    <Version>1.0.0</Version>
+    <Version>0.9.0</Version>
     <Description>Unity wrapper system for TwitchLib</Description>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>LuckyNoS7evin</Authors>
@@ -17,8 +17,8 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library unity3d unity dotnet c# csharp net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>0.9.0.0</AssemblyVersion>
+    <FileVersion>0.9.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
