@@ -286,7 +286,7 @@ namespace TwitchLib.Unity
         /// <param name="channel">JoinedChannel object to designate which channel to send request to.</param>
         public new void GetChannelModerators(JoinedChannel channel)
         {
-            if (!IsInitialized) HandleNotInitialized();
+            //if (!IsInitialized) HandleNotInitialized();
             if (OnModeratorsReceived == null)
                 throw new EventNotHandled("OnModeratorsReceived");
             SendMessage(channel, "/mods");
