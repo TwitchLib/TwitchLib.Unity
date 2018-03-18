@@ -1,6 +1,7 @@
 using System;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
+using TwitchLib.Client.Exceptions;
 using TwitchLib.Client.Interfaces;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace TwitchLib.Unity
 {
     public class Client : TwitchClient, ITwitchClient
     {
+
         private readonly GameObject _threadDispatcher;
 
         #region Events
@@ -205,15 +207,27 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
         #endregion
 
+        public new bool OverrideBeingHostedCheck { get; set; }
         public Client() : base(null)
         {
             _threadDispatcher = new GameObject("TwitchClientUnityDispatcher");
             _threadDispatcher.AddComponent<ThreadDispatcher>();
             UnityEngine.Object.DontDestroyOnLoad(_threadDispatcher);
-                       
-            base.OnLog += ((object sender, OnLogArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnLog?.Invoke(sender, e)); });
+
+            base.OverrideBeingHostedCheck = true;
+
+            base.OnLog += (object sender, OnLogArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnLog?.Invoke(sender, e)); };
             base.OnConnected += ((object sender, OnConnectedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnConnected?.Invoke(sender, e)); });
-            base.OnJoinedChannel += ((object sender, OnJoinedChannelArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnJoinedChannel?.Invoke(sender, e)); });
+
+            base.OnJoinedChannel += ((object sender, OnJoinedChannelArgs e) => {
+
+                ThreadDispatcher.Instance().Enqueue(() => OnJoinedChannel?.Invoke(sender, e));
+
+                if (OnBeingHosted == null) return;
+                if (e.Channel.ToLower() != TwitchUsername && !OverrideBeingHostedCheck)
+                    ThreadDispatcher.Instance().Enqueue(() => throw new BadListenException("BeingHosted", "You cannot listen to OnBeingHosted unless you are connected to the broadcaster's channel as the broadcaster. You may override this by setting the TwitchClient property OverrideBeingHostedCheck to true."));
+            });
+
             base.OnIncorrectLogin += ((object sender, OnIncorrectLoginArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnIncorrectLogin?.Invoke(sender, e)); });
             base.OnChannelStateChanged += ((object sender, OnChannelStateChangedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnChannelStateChanged?.Invoke(sender, e)); });
             base.OnUserStateChanged += ((object sender, OnUserStateChangedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnUserStateChanged?.Invoke(sender, e)); });
