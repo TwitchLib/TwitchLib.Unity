@@ -3,14 +3,27 @@ using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Exceptions;
 using TwitchLib.Client.Interfaces;
+using TwitchLib.Client.Models;
 using UnityEngine;
 
 namespace TwitchLib.Unity
 {
     public class Client : TwitchClient, ITwitchClient
     {
-
         private readonly GameObject _threadDispatcher;
+        public new bool OverrideBeingHostedCheck { get; set; }
+
+        public new ConnectionCredentials ConnectionCredentials
+        {
+            get => base.ConnectionCredentials;
+            set
+            {
+                if (IsConnected)
+                    ThreadDispatcher.Instance().Enqueue(() => throw new IllegalAssignmentException("While the client is connected, you are unable to change the connection credentials. Please disconnect first and then change them."));
+                base.ConnectionCredentials = value;
+                TwitchUsername = value.TwitchUsername;
+            }
+        }
 
         #region Events
         /// <summary>
@@ -207,7 +220,6 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
         #endregion
 
-        public new bool OverrideBeingHostedCheck { get; set; }
         public Client() : base(null)
         {
             _threadDispatcher = new GameObject("TwitchClientUnityDispatcher");
@@ -266,6 +278,23 @@ namespace TwitchLib.Unity
             base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnUnaccountedFor?.Invoke(sender, e)); });
             base.OnSelfRaidError += ((object sender, EventArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnSelfRaidError?.Invoke(sender, e)); });
             base.OnNoPermissionError += ((object sender, EventArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnNoPermissionError?.Invoke(sender, e)); });
+        }
+
+        /// <summary>
+        /// Sends a request to get channel moderators. You MUST listen to OnModeratorsReceived event./>.
+        /// </summary>
+        /// <param name="channel">JoinedChannel object to designate which channel to send request to.</param>
+        public new void GetChannelModerators(JoinedChannel channel)
+        {
+            if (!IsInitialized) HandleNotInitialized();
+            if (OnModeratorsReceived == null)
+                throw new EventNotHandled("OnModeratorsReceived");
+            SendMessage(channel, "/mods");
+        }
+
+        private new void HandleNotInitialized()
+        {
+            ThreadDispatcher.Instance().Enqueue(() => throw new ClientNotInitializedException("The twitch client has not been initialized and cannot be used. Please call Initialize();"));
         }
     } 
 }
