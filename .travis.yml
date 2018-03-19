@@ -1,5 +1,6 @@
 language: csharp
 solution: TwitchLib.Unity.sln
 install:
-  - sudo apt-get install -y gtk-sharp2
   - nuget restore TwitchLib.Unity.sln
+script:
+  - xbuild /p:Configuration=Release TwitchLib.Unity.sln /p:TargetFrameworkVersion="v4.5.2"
