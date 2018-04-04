@@ -38,9 +38,27 @@ public class TwitchClientExample : MonoBehaviour
        
     }
 
+    private void _client_OnJoinedChannel(object sender, TwitchLib.Client.Events.OnJoinedChannel e) {
+        _client.SendMessage(e.Channel, "I just joined the channel! PogChamp ");
+    }
+    
     private void _client_OnMessageReceived(object sender, TwitchLib.Client.Events.OnMessageReceivedArgs e)
     {
         //Your implementation here
+    }
+    
+    private void _client_OnChatCommandReceived(object sender, TwitchLib.Client.Events.OnChatCommandReceived e) {
+        switch(e.Command.CommandText) {
+            case "hello":
+                _client.SendMessage(e.Command.ChatMessage.Channel, $"Hello {e.Command.ChatMessage.DisplayName}!");
+                break;
+            case "about":
+                _client.SendMessage(e.Command.ChatMessage.Channel, "I am a Twitch bot running on TwitchLib!");
+                break;
+            default:
+                _client.SendMessage(e.Command.ChatMessage.Channel, $"Unknown chat command: {e.Command.CommandIdentifier}{e.Command.CommandText}");
+                break;
+        }
     }
 
     // Update is called once per frame
