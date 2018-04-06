@@ -12,19 +12,7 @@ namespace TwitchLib.Unity
     {
         private readonly GameObject _threadDispatcher;
         public new bool OverrideBeingHostedCheck { get; set; }
-
-        public new ConnectionCredentials ConnectionCredentials
-        {
-            get => base.ConnectionCredentials;
-            set
-            {
-                if (IsConnected)
-                    ThreadDispatcher.Instance().Enqueue(() => throw new IllegalAssignmentException("While the client is connected, you are unable to change the connection credentials. Please disconnect first and then change them."));
-                base.ConnectionCredentials = value;
-                TwitchUsername = value.TwitchUsername;
-            }
-        }
-
+        
         #region Events
         /// <summary>
         /// Fires whenever a log write happens.
