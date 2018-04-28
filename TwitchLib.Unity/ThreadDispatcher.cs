@@ -11,6 +11,9 @@ namespace TwitchLib.Unity
 
         private static Queue<Action> _executionQueue = new Queue<Action>();
 
+        /// <summary>
+        /// Ensures a thread dispatcher is created if there is none.
+        /// </summary>
         public static void EnsureCreated()
         {
             if (_instance == null || _instance.gameObject == null)

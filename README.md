@@ -85,38 +85,69 @@ public class TwitchApiExample : MonoBehaviour
 {
     private Api _api;
 
-    void Start()
-    {
-        //Set to run in minimized mode
-        Application.runInBackground = true;
-        //Create new instance of Api
-        _api = new Api();
-        //Initialize your Api with credentials
-        _api.InitializeAsync(Secrets.ClientId, Secrets.OAuth);
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
-        //Don't call the Api on every Update, this is sample on how to call the Api,
-        //this is not an example on how to code.
-        if(SomeConditionMet)
-        {
-            //Do what you want here, however if you want to call the twitch API this can be done as follows. 
-            //The following example is the GetChannelVideos if you want to call any TwitchLib.Api
-            //endpoint replace the the following with your method call "_api.Channels.v5.GetChannelVideosAsync("{{CHANNEL_ID}}");"
-            _api.Invoke(
-                //Func<Task<ChannelVideos>>
-                () => { return _api.Channels.v5.GetChannelVideosAsync("14900522"); },
-                //Action<T>
-                GetChannelVideosCallback);
-        }
-    }
+	private void Start()
+	{
+		//Set to run in minimized mode
+		Application.runInBackground = true;
+		//Create new instance of Api
+		_api = new Api();
+		//Initialize your Api with credentials
+		_api.InitializeAsync(Secrets.ClientId, Secrets.OAuth);
+	}
 
-    private void GetChannelVideosCallback(TwitchLib.Api.Models.v5.Channels.ChannelVideos e)
-    {
+	// Update is called once per frame
+	private void Update()
+	{
+		//Don't call the Api on every Update, this is sample on how to call the Api,
+		//this is not an example on how to code.
+		if (SomeConditionMet)
+		{
+			//Do what you want here, however if you want to call the twitch API this can be done as follows. 
+			//The following example is the GetChannelVideos if you want to call any TwitchLib.Api
+			//endpoint replace the the following with your method call "_api.Channels.v5.GetChannelVideosAsync("{{CHANNEL_ID}}");"
+			_api.Invoke(
+				//Func<Task<ChannelVideos>>
+				() => { return _api.Channels.v5.GetChannelVideosAsync("14900522"); },
+				//Action<T>
+				GetChannelVideosCallback);
+		}
 
-    }
+		if (SomeOtherConditionMet)
+		{
+			StartCoroutine(GetLuckyNoS7evinsChannelVideos("LuckyNoS7evin"));
+		}
+	}
+	
+	private System.Collections.IEnumerator GetLuckyNoS7evinsChannelVideos(string luckysUsername)
+	{
+		//Lets get Lucky's id first
+		TwitchLib.Api.Models.Helix.Users.GetUsers.GetUsersResponse getUsersResponse = null;
+		yield return _api.InvokeAsync(
+			   //Func<Task<ChannelVideos>>
+			   () => { return _api.Users.helix.GetUsersAsync(logins: new List<string> { luckysUsername }); },
+			   //Action<T>
+			   (response) => getUsersResponse = response);
+		//We won't reach this point until the api request is completed, and the getUsersResponse is set.
+
+		//We'll assume the request went well and that we made no typo's, meaning we should have 1 user at index 1, which is LuckyNoS7evin
+		string luckyId = getUsersResponse.Users[0].Id;
+
+		//Now that we have lucky's id, lets get his videos!
+		TwitchLib.Api.Models.v5.Channels.ChannelVideos luckyNoS7evinsChannelVideos = null;
+		yield return _api.InvokeAsync(
+			   //Func<Task<ChannelVideos>>
+			   () => { return _api.Channels.v5.GetChannelVideosAsync(luckyId); },
+			   //Action<T>
+			   (response) => luckyNoS7evinsChannelVideos = response);
+		//Again, we won't reach this point until the request is completed!
+
+		//Handle luckyNoS7evin's ChannelVideos
+	}
+
+	private void GetChannelVideosCallback(TwitchLib.Api.Models.v5.Channels.ChannelVideos e)
+	{
+
+	}
 }
 
 

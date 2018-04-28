@@ -16,7 +16,7 @@ namespace TwitchLib.Unity
         {
         }
 
-        public void Invoke<T>(Func<Task<T>> func, Action<T> action = null)
+        public void Invoke<T>(Func<Task<T>> func, Action<T> action)
         {
             ThreadDispatcher.EnsureCreated();
             Task.Run(func).ContinueWith((x) =>
@@ -39,7 +39,7 @@ namespace TwitchLib.Unity
         /// <summary>
         /// Invokes a function async, and waits for a response before continuing. 
         /// </summary>
-        public IEnumerator InvokeAsync<T>(Func<Task<T>> func, Action<T> action = null)
+        public IEnumerator InvokeAsync<T>(Func<Task<T>> func, Action<T> action)
         {
             bool requestCompleted = false;
             Invoke(func, (result) =>
