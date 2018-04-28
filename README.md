@@ -142,6 +142,7 @@ public class TwitchApiExample : MonoBehaviour
 		//Again, we won't reach this point until the request is completed!
 
 		//Handle luckyNoS7evin's ChannelVideos
+		//Using this way of calling the api, we still have access to luckysUsername!
 	}
 
 	private void GetChannelVideosCallback(TwitchLib.Api.Models.v5.Channels.ChannelVideos e)
