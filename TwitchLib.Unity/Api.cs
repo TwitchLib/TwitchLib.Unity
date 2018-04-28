@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -11,59 +12,52 @@ namespace TwitchLib.Unity
 {
     public class Api : TwitchAPI, ITwitchAPI
     {
-        private readonly GameObject _threadDispatcher;
-		
-        public Api():base()
+        public Api() : base()
         {
-            ServicePointManager.ServerCertificateValidationCallback = CertificateValidationMonoFix;
-
-            _threadDispatcher = new GameObject("TwitchApiUnityDispatcher");
-            _threadDispatcher.AddComponent<ThreadDispatcher>();
-            UnityEngine.Object.DontDestroyOnLoad(_threadDispatcher);
-
         }
 
-        public bool CertificateValidationMonoFix(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        public void Invoke<T>(Func<Task<T>> func, Action<T> action = null)
         {
-            bool isOk = true;
-
-            if (sslPolicyErrors == SslPolicyErrors.None)
-            {
-                return true;
-            }
-
-            foreach (X509ChainStatus status in chain.ChainStatus)
-            {
-                if (status.Status == X509ChainStatusFlags.RevocationStatusUnknown)
-                {
-                    continue;
-                }
-
-                chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
-                chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
-                chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan(0, 1, 0);
-                chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllFlags;
-
-                bool chainIsValid = chain.Build((X509Certificate2)certificate);
-
-                if (!chainIsValid)
-                {
-                    isOk = false;
-                }
-            }
-
-            return isOk;
-        }
-		
-        public void Invoke<T>(Func<Task<T>> func, Action<T> action)
-        {
+            ThreadDispatcher.EnsureCreated();
             Task.Run(func).ContinueWith((x) =>
             {               
                 var value = x.Result;
-                ThreadDispatcher.Instance().Enqueue(() => action.Invoke(value));
+                ThreadDispatcher.Enqueue(() => action?.Invoke(value));
             });
         }
+
+        public void Invoke(Func<Task> func, Action action = null)
+        {
+            ThreadDispatcher.EnsureCreated();
+            Task.Run(func).ContinueWith((x) =>
+            {
+                x.Wait();
+                ThreadDispatcher.Enqueue(() => action?.Invoke());
+            });
+        }
+
+        /// <summary>
+        /// Invokes a function async, and waits for a response before continuing. 
+        /// </summary>
+        public IEnumerator InvokeAsync<T>(Func<Task<T>> func, Action<T> action = null)
+        {
+            bool requestCompleted = false;
+            Invoke(func, (result) =>
+            {
+                action?.Invoke(result);
+                requestCompleted = true;
+            });
+            yield return new WaitUntil(() => requestCompleted);
+        }
+
+        /// <summary>
+        /// Invokes a function async, and waits for the request to complete before continuing. 
+        /// </summary>
+        public IEnumerator InvokeAsync(Func<Task> func)
+        {
+            bool requestCompleted = false;
+            Invoke(func, () => requestCompleted = true);
+            yield return new WaitUntil(() => requestCompleted);
+        }
     }
-
-
 }

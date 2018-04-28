@@ -13,5 +13,4 @@ namespace TwitchLib.Unity
             return new UnityEngine.Color(color.R, color.G, color.B, color.A);
         }
     }
-
 }
