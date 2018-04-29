@@ -239,7 +239,6 @@ namespace TwitchLib.Unity
             base.OnModeratorLeft += ((object sender, OnModeratorLeftArgs e) => { ThreadDispatcher.Enqueue(() => OnModeratorLeft?.Invoke(sender, e)); });
             base.OnNewSubscriber += ((object sender, OnNewSubscriberArgs e) => { ThreadDispatcher.Enqueue(() => OnNewSubscriber?.Invoke(sender, e)); });
             base.OnReSubscriber += ((object sender, OnReSubscriberArgs e) => { ThreadDispatcher.Enqueue(() => OnReSubscriber?.Invoke(sender, e)); });
-            base.OnHostLeft += ((object sender, EventArgs arg) => { ThreadDispatcher.Enqueue(() => OnHostLeft(sender, arg)); });
             base.OnExistingUsersDetected += ((object sender, OnExistingUsersDetectedArgs e) => { ThreadDispatcher.Enqueue(() => OnExistingUsersDetected?.Invoke(sender, e)); });
             base.OnUserLeft += ((object sender, OnUserLeftArgs e) => { ThreadDispatcher.Enqueue(() => OnUserLeft?.Invoke(sender, e)); });
             base.OnHostingStarted += ((object sender, OnHostingStartedArgs e) => { ThreadDispatcher.Enqueue(() => OnHostingStarted?.Invoke(sender, e)); });
@@ -257,7 +256,6 @@ namespace TwitchLib.Unity
             base.OnBeingHosted += ((object sender, OnBeingHostedArgs e) => { ThreadDispatcher.Enqueue(() => OnBeingHosted?.Invoke(sender, e)); });
             base.OnRaidNotification += ((object sender, OnRaidNotificationArgs e) => { ThreadDispatcher.Enqueue(() => OnRaidNotification?.Invoke(sender, e)); });
             base.OnGiftedSubscription += ((object sender, OnGiftedSubscriptionArgs e) => { ThreadDispatcher.Enqueue(() => OnGiftedSubscription?.Invoke(sender, e)); });
-            base.OnRaidedChannelIsMatureAudience += ((object sender, EventArgs arg) => { ThreadDispatcher.Enqueue(() => OnRaidedChannelIsMatureAudience(sender, arg)); });
             base.OnRitualNewChatter += ((object sender, OnRitualNewChatterArgs e) => { ThreadDispatcher.Enqueue(() => OnRitualNewChatter?.Invoke(sender, e)); });
             base.OnFailureToReceiveJoinConfirmation += ((object sender, OnFailureToReceiveJoinConfirmationArgs e) => { ThreadDispatcher.Enqueue(() => OnFailureToReceiveJoinConfirmation?.Invoke(sender, e)); });
             base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { ThreadDispatcher.Enqueue(() => OnUnaccountedFor?.Invoke(sender, e)); });
