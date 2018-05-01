@@ -11,6 +11,6 @@ namespace TwitchLib.Unity
         private static Thread _mainThread;
 
         public static Thread Main => _mainThread;
-        public static bool CurrentIsMainThread => _mainThread == Thread.CurrentThread;
+        public static bool CurrentIsMainThread => _mainThread == null || _mainThread == Thread.CurrentThread;
     }
 }
