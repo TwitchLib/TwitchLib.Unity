@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace TwitchLib.Unity
@@ -14,10 +14,10 @@ namespace TwitchLib.Unity
         /// <summary>
         /// Ensures a thread dispatcher is created if there is none.
         /// </summary>
-        public static void EnsureCreated()
+        public static void EnsureCreated([CallerMemberName] string callerMemberName = null)
         {
             if (_instance == null || _instance.gameObject == null)
-                _instance = CreateThreadDispatcherSingleton();
+                _instance = CreateThreadDispatcherSingleton(callerMemberName);
         }
 
         /// <summary>
@@ -37,8 +37,11 @@ namespace TwitchLib.Unity
                 _executionQueue.Dequeue().Invoke();
         }
 
-        private static ThreadDispatcher CreateThreadDispatcherSingleton()
+        private static ThreadDispatcher CreateThreadDispatcherSingleton(string callerMemberName)
         {
+            if (!UnityThread.CurrentIsMainThread)
+                throw new InvalidOperationException($"The {callerMemberName} can only be created from the main thread. Did you accidentally delete the " + nameof(ThreadDispatcher) + " in your scene?");
+
             ThreadDispatcher threadDispatcher = new GameObject(nameof(ThreadDispatcher)).AddComponent<ThreadDispatcher>();
             DontDestroyOnLoad(threadDispatcher);
             return threadDispatcher;
