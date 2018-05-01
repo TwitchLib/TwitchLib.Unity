@@ -1,85 +1,47 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 namespace TwitchLib.Unity
 {
     public class ThreadDispatcher : MonoBehaviour
     {
+        private static ThreadDispatcher _instance;
 
-        private static readonly Queue<Action> _executionQueue = new Queue<Action>();
-
-        public void Update()
-        {
-            lock (_executionQueue)
-            {
-                while (_executionQueue.Count > 0)
-                {
-                    _executionQueue.Dequeue().Invoke();
-                }
-            }
-        }
+        private static Queue<Action> _executionQueue = new Queue<Action>();
 
         /// <summary>
-        /// Locks the queue and adds the IEnumerator to the queue
+        /// Ensures a thread dispatcher is created if there is none.
         /// </summary>
-        /// <param name="action">IEnumerator function that will be executed from the main thread.</param>
-        public void Enqueue(IEnumerator action)
+        public static void EnsureCreated()
         {
-            lock (_executionQueue)
-            {
-                _executionQueue.Enqueue(() => {
-                    StartCoroutine(action);
-                });
-            }
+            if (_instance == null || _instance.gameObject == null)
+                _instance = CreateThreadDispatcherSingleton();
         }
 
         /// <summary>
         /// Locks the queue and adds the Action to the queue
         /// </summary>
         /// <param name="action">function that will be executed from the main thread.</param>
-        public void Enqueue(Action action)
+        public static void Enqueue(Action action)
         {
-            Enqueue(ActionWrapper(action));
+            _executionQueue.Enqueue(action);
         }
 
-        IEnumerator ActionWrapper(Action a)
+        private void Update()
         {
-            a();
-            yield return null;
-        }
-        
-        private static ThreadDispatcher _instance = null;
-
-        public static bool Exists()
-        {
-            return _instance != null;
+            //storing the count here instead of locking the queue so we don't end up with a deadlock when one of the actions queues another action
+            int count = _executionQueue.Count;
+            for (int i = 0; i < count; i++)
+                _executionQueue.Dequeue().Invoke();
         }
 
-        public static ThreadDispatcher Instance()
+        private static ThreadDispatcher CreateThreadDispatcherSingleton()
         {
-            if (!Exists())
-            {
-                throw new Exception("TwitchLibUnityThreadDispatcher could not find the UnityMainThreadDispatcher object. Please ensure you have added the MainThreadExecutor Prefab to your scene.");
-            }
-            return _instance;
+            ThreadDispatcher threadDispatcher = new GameObject(nameof(ThreadDispatcher)).AddComponent<ThreadDispatcher>();
+            DontDestroyOnLoad(threadDispatcher);
+            return threadDispatcher;
         }
-        
-        void Awake()
-        {
-            if (_instance == null)
-            {
-                _instance = this;
-                DontDestroyOnLoad(this.gameObject);
-            }
-        }
-
-        void OnDestroy()
-        {
-            _instance = null;
-        }
-
-
     }
 }

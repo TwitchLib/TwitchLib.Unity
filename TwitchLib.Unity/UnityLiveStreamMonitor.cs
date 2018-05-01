@@ -8,8 +8,6 @@ namespace TwitchLib.Unity
 {
     public class UnityLiveStreamMonitor : LiveStreamMonitor
     {
-        private readonly GameObject _threadDispatcher;
-
         #region EVENTS
         /// <summary>Event fires when Stream goes online</summary>
         public new event EventHandler<OnStreamOnlineArgs> OnStreamOnline;
@@ -25,17 +23,16 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnStreamsSetArgs> OnStreamsSet;
         #endregion
 
-        public UnityLiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, bool checkStatusOnStart = true, bool invokeEventsOnStart = false) : base(api, checkIntervalSeconds, checkStatusOnStart, invokeEventsOnStart) {
-            _threadDispatcher = new GameObject("UnityLiveStreamMonitorThreadDispatcher");
-            _threadDispatcher.AddComponent<ThreadDispatcher>();
-            UnityEngine.Object.DontDestroyOnLoad(_threadDispatcher);
+        public UnityLiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, bool checkStatusOnStart = true, bool invokeEventsOnStart = false) : base(api, checkIntervalSeconds, checkStatusOnStart, invokeEventsOnStart)
+        {
+            ThreadDispatcher.EnsureCreated();
 
-            base.OnStreamOnline += ((object sender, OnStreamOnlineArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnStreamOnline?.Invoke(sender, e)); });
-            base.OnStreamOffline += ((object sender, OnStreamOfflineArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnStreamOffline?.Invoke(sender, e)); });
-            base.OnStreamUpdate += ((object sender, OnStreamUpdateArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnStreamUpdate?.Invoke(sender, e)); });
-            base.OnStreamMonitorStarted += ((object sender, OnStreamMonitorStartedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnStreamMonitorStarted?.Invoke(sender, e)); });
-            base.OnStreamMonitorEnded += ((object sender, OnStreamMonitorEndedArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnStreamMonitorEnded?.Invoke(sender, e)); });
-            base.OnStreamsSet += ((object sender, OnStreamsSetArgs e) => { ThreadDispatcher.Instance().Enqueue(() => OnStreamsSet?.Invoke(sender, e)); });
+            base.OnStreamOnline += ((object sender, OnStreamOnlineArgs e) => {  ThreadDispatcher.Enqueue(() => OnStreamOnline?.Invoke(sender, e)); });
+            base.OnStreamOffline += ((object sender, OnStreamOfflineArgs e) => {  ThreadDispatcher.Enqueue(() => OnStreamOffline?.Invoke(sender, e)); });
+            base.OnStreamUpdate += ((object sender, OnStreamUpdateArgs e) => {  ThreadDispatcher.Enqueue(() => OnStreamUpdate?.Invoke(sender, e)); });
+            base.OnStreamMonitorStarted += ((object sender, OnStreamMonitorStartedArgs e) => {  ThreadDispatcher.Enqueue(() => OnStreamMonitorStarted?.Invoke(sender, e)); });
+            base.OnStreamMonitorEnded += ((object sender, OnStreamMonitorEndedArgs e) => {  ThreadDispatcher.Enqueue(() => OnStreamMonitorEnded?.Invoke(sender, e)); });
+            base.OnStreamsSet += ((object sender, OnStreamsSetArgs e) => {  ThreadDispatcher.Enqueue(() => OnStreamsSet?.Invoke(sender, e)); });
         }
     }
 }
