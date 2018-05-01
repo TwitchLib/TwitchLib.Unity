@@ -265,18 +265,6 @@ namespace TwitchLib.Unity
             base.OnNoPermissionError += ((object sender, EventArgs e) => { ThreadDispatcher.Enqueue(() => OnNoPermissionError?.Invoke(sender, e)); });
         }
 
-        /// <summary>
-        /// Sends a request to get channel moderators. You MUST listen to OnModeratorsReceived event./>.
-        /// </summary>
-        /// <param name="channel">JoinedChannel object to designate which channel to send request to.</param>
-        public new void GetChannelModerators(JoinedChannel channel)
-        {
-            //if (!IsInitialized) HandleNotInitialized();
-            if (OnModeratorsReceived == null)
-                throw new EventNotHandled("OnModeratorsReceived");
-            SendMessage(channel, "/mods");
-        }
-
         private new void HandleNotInitialized()
         {
             ThreadDispatcher.Enqueue(() => throw new ClientNotInitializedException("The twitch client has not been initialized and cannot be used. Please call Initialize();"));
