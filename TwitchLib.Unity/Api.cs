@@ -16,35 +16,41 @@ namespace TwitchLib.Unity
         {
         }
 
-        public void Invoke<T>(Func<Task<T>> func, Action<T> action)
+        public void Invoke<T>(Task<T> func, Action<T> action)
         {
+            if (func == null) throw new ArgumentNullException();
+            if (action == null) throw new ArgumentNullException();
+
             ThreadDispatcher.EnsureCreated();
-            Task.Run(func).ContinueWith((x) =>
+            func.ContinueWith((x) =>
             {               
                 var value = x.Result;
-                ThreadDispatcher.Enqueue(() => action?.Invoke(value));
+                ThreadDispatcher.Enqueue(() => action.Invoke(value));
             });
         }
 
-        public void Invoke(Func<Task> func, Action action = null)
+        public void Invoke(Task func, Action action )
         {
+            if (func == null) throw new ArgumentNullException();
+            if (action == null) throw new ArgumentNullException();
+
             ThreadDispatcher.EnsureCreated();
-            Task.Run(func).ContinueWith((x) =>
+            func.ContinueWith((x) =>
             {
                 x.Wait();
-                ThreadDispatcher.Enqueue(() => action?.Invoke());
+                ThreadDispatcher.Enqueue(() => action.Invoke());
             });
         }
 
         /// <summary>
         /// Invokes a function async, and waits for a response before continuing. 
         /// </summary>
-        public IEnumerator InvokeAsync<T>(Func<Task<T>> func, Action<T> action)
+        public IEnumerator InvokeAsync<T>(Task<T> func, Action<T> action)
         {
             bool requestCompleted = false;
             Invoke(func, (result) =>
             {
-                action?.Invoke(result);
+                action.Invoke(result);
                 requestCompleted = true;
             });
             yield return new WaitUntil(() => requestCompleted);
@@ -53,7 +59,7 @@ namespace TwitchLib.Unity
         /// <summary>
         /// Invokes a function async, and waits for the request to complete before continuing. 
         /// </summary>
-        public IEnumerator InvokeAsync(Func<Task> func)
+        public IEnumerator InvokeAsync(Task func)
         {
             bool requestCompleted = false;
             Invoke(func, () => requestCompleted = true);
