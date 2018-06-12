@@ -12,6 +12,8 @@ TwitchLib repository representing all code belonging to the implementation of Tw
 * **PubSub**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
 
 ## Implementing
+Fantastic guide by [@HonestDanGames](https://twitter.com/HonestDanGames): **[The Beginners Guide to Starting a Twitch Stream Overlay Game using Unity & C#](https://docs.google.com/document/d/1GfYC3BGW2gnS7GmNE1TwMEdk0QYY2zHccxXp53-WiKM)**
+
 Below are basic examples of how to utilize TwitchLib.Unity libraries including Api, Chat Client and PubSub
 
 ### Chat Client for Unity
