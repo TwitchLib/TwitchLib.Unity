@@ -10,36 +10,28 @@ using UnityEngine;
 
 namespace TwitchLib.Unity
 {
-    public class Api : TwitchAPI, ITwitchAPI
+    public class Api : TwitchAPI
     {
-        public Api() : base()
-        {
-        }
-
+        /// <summary>
+        /// Waits for the task to execute and invokes the provided action with the task's result on Unity's main thread.
+        /// </summary>
         public void Invoke<T>(Task<T> func, Action<T> action)
         {
-            if (func == null) throw new ArgumentNullException();
-            if (action == null) throw new ArgumentNullException();
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            if (action == null) throw new ArgumentNullException(nameof(action));
 
-            ThreadDispatcher.EnsureCreated();
-            func.ContinueWith((x) =>
-            {               
-                var value = x.Result;
-                ThreadDispatcher.Enqueue(() => action.Invoke(value));
-            });
+            InvokeInternal(func, action);
         }
 
-        public void Invoke(Task func, Action action )
+        /// <summary>
+        /// Waits for the task to execute and invokes the provided action on Unity's main thread.
+        /// </summary>
+        public void Invoke(Task func, Action action)
         {
-            if (func == null) throw new ArgumentNullException();
-            if (action == null) throw new ArgumentNullException();
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            if (action == null) throw new ArgumentNullException(nameof(action));
 
-            ThreadDispatcher.EnsureCreated();
-            func.ContinueWith((x) =>
-            {
-                x.Wait();
-                ThreadDispatcher.Enqueue(() => action.Invoke());
-            });
+            InvokeInternal(func, action);
         }
 
         /// <summary>
@@ -47,8 +39,11 @@ namespace TwitchLib.Unity
         /// </summary>
         public IEnumerator InvokeAsync<T>(Task<T> func, Action<T> action)
         {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            if (action == null) throw new ArgumentNullException(nameof(action));
+
             bool requestCompleted = false;
-            Invoke(func, (result) =>
+            InvokeInternal(func, (result) =>
             {
                 action.Invoke(result);
                 requestCompleted = true;
@@ -61,9 +56,31 @@ namespace TwitchLib.Unity
         /// </summary>
         public IEnumerator InvokeAsync(Task func)
         {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+
             bool requestCompleted = false;
-            Invoke(func, () => requestCompleted = true);
+            InvokeInternal(func, () => requestCompleted = true);
             yield return new WaitUntil(() => requestCompleted);
+        }
+
+        private void InvokeInternal(Task func, Action action)
+        {
+            ThreadDispatcher.EnsureCreated();
+            func.ContinueWith((x) =>
+            {
+                x.Wait();
+                ThreadDispatcher.Enqueue(() => action.Invoke());
+            });
+        }
+
+        private void InvokeInternal<T>(Task<T> func, Action<T> action)
+        {
+            ThreadDispatcher.EnsureCreated();
+            func.ContinueWith((x) =>
+            {
+                var value = x.Result;
+                ThreadDispatcher.Enqueue(() => action.Invoke(value));
+            });
         }
     }
 }
