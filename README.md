@@ -219,15 +219,12 @@ public class TwitchApiExample : MonoBehaviour
 ### PubSub for Unity
 ```csharp
 
-// If type or namespace TwitchLib could not be found. Make sure you add the latest TwitchLib.Unity.dll to your project folder
-// Download it here: https://github.com/TwitchLib/TwitchLib.Unity/releases
-// Or download the repository at https://github.com/TwitchLib/TwitchLib.Unity, build it, and copy the TwitchLib.Unity.dll from the output directory
 using TwitchLib.Unity;
 using UnityEngine;
 
 public class TwitchPubSubExample : MonoBehaviour
 {
-	private PubSub _pubSub;
+    private PubSub _pubSub;
 
 	private void Start()
 	{
@@ -240,7 +237,7 @@ public class TwitchPubSubExample : MonoBehaviour
 		_pubSub = new PubSub();
 
 		// Subscribe to Events
-		_pubSub.OnBitsReceived += OnBitsReceived;
+		_pubSub.OnWhisper += OnWhisper;
 		_pubSub.OnPubSubServiceConnected += OnPubSubServiceConnected;
 
 		// Connect
@@ -251,17 +248,18 @@ public class TwitchPubSubExample : MonoBehaviour
 	{
 		Debug.Log("PubSubServiceConnected!");
 
-		// On connect listen to Bits event
-		// Please note that to listen to the bits event requires the bits:read scope in the OAuth token.
-		_pubSub.ListenToBitsEvents(Secrets.USERNAME_FROM_OAUTH_TOKEN);
+        // On connect listen to Bits evadsent
+        // Please note that listening to the whisper events requires the chat_login scope in the OAuth token.
+        _pubSub.ListenToWhispers(Secrets.CHANNEL_ID_FROM_OAUTH_TOKEN);
 
 		// SendTopics accepts an oauth optionally, which is necessary for some topics, such as bit events.
 		_pubSub.SendTopics(Secrets.OAUTH_TOKEN);
 	}
 
-	private void OnBitsReceived(object sender, TwitchLib.PubSub.Events.OnBitsReceivedArgs e)
+	private void OnWhisper(object sender, TwitchLib.PubSub.Events.OnWhisperArgs e)
 	{
-		// Do your bits logic here.
+	    Debug.Log($"{e.Whisper.Data}");
+	    // Do your bits logic here.
 	}
 }
 
@@ -275,6 +273,7 @@ public static class Secrets
 	public const string CLIENT_ID = "CLIENT_ID"; //Your application's client ID, register one at https://dev.twitch.tv/dashboard
 	public const string OAUTH_TOKEN = "OAUTH_TOKEN"; //A Twitch OAuth token which can be used to connect to the chat
 	public const string USERNAME_FROM_OAUTH_TOKEN = "USERNAME_FROM_OAUTH_TOKEN"; //The username which was used to generate the OAuth token
+	public const string CHANNEL_ID_FROM_OAUTH_TOKEN = "236123268"; //The channel Id from the account which was used to generate the OAuth token
 }
 
 ```
