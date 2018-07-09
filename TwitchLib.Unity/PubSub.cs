@@ -76,7 +76,7 @@ namespace TwitchLib.Unity
             base.OnR9kBeta += (sender, e) => { ThreadDispatcher.Enqueue(() => OnR9kBeta?.Invoke(sender, e)); };
             base.OnR9kBetaOff += (sender, e) => { ThreadDispatcher.Enqueue(() => OnR9kBetaOff?.Invoke(sender, e)); };
             base.OnBitsReceived += (sender, e) => { ThreadDispatcher.Enqueue(() => OnBitsReceived?.Invoke(sender, e)); };
-            base.OnStreamUp += (sender, arg) => { ThreadDispatcher.Enqueue(() => OnStreamUp(sender, arg)); };
+            base.OnStreamUp += (sender, arg) => { ThreadDispatcher.Enqueue(() => OnStreamUp?.Invoke(sender, arg)); };
             base.OnStreamDown += (sender, e) => { ThreadDispatcher.Enqueue(() => OnStreamDown?.Invoke(sender, e)); };
             base.OnViewCount += (sender, e) => { ThreadDispatcher.Enqueue(() => OnViewCount?.Invoke(sender, e)); };
             base.OnWhisper += (sender, e) => { ThreadDispatcher.Enqueue(() => OnWhisper?.Invoke(sender, e)); };
