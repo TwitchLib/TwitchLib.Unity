@@ -2,11 +2,10 @@
 using System.Net;
 using TwitchLib.PubSub;
 using TwitchLib.PubSub.Events;
-using TwitchLib.PubSub.Interfaces;
 
 namespace TwitchLib.Unity
 {
-    public class PubSub : TwitchPubSub, ITwitchPubSub
+    public class PubSub : TwitchPubSub
     {
         #region Events
         /// <summary>EventHandler for named event.</summary>
