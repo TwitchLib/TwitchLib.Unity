@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -52,4 +52,7 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="..\Assemblies\ilmerge /out:$(OutDir)TwitchLib.Unity.dll $(OutDir)TwitchLib.Unity.dll $(OutDir)Microsoft.Extensions.Logging.Abstractions.dll $(OutDir)Newtonsoft.Json.dll $(OutDir)TwitchLib.Api.Core.dll $(OutDir)TwitchLib.Api.Core.Enums.dll $(OutDir)TwitchLib.Api.Core.Interfaces.dll $(OutDir)TwitchLib.Api.Core.Models.dll $(OutDir)TwitchLib.Api.dll $(OutDir)TwitchLib.Api.Helix.dll $(OutDir)TwitchLib.Api.Helix.Models.dll $(OutDir)TwitchLib.Api.V5.dll $(OutDir)TwitchLib.Api.V5.Models.dll $(OutDir)TwitchLib.Client.dll $(OutDir)TwitchLib.Client.Enums.dll $(OutDir)TwitchLib.Client.Models.dll $(OutDir)TwitchLib.Communication.dll $(OutDir)TwitchLib.PubSub.dll&#xD;&#xA;del $(OutDir)TwitchLib.Unity.deps.json&#xD;&#xA;del $(OutDir)TwitchLib.Unity.pdb&#xD;&#xA;del $(OutDir)Microsoft.Extensions.Logging.Abstractions.dll&#xD;&#xA;del $(OutDir)Newtonsoft.Json.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Core.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Core.Enums.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Core.Interfaces.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Core.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Helix.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Helix.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.V5.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.V5.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Client.dll&#xD;&#xA;del $(OutDir)TwitchLib.Client.Enums.dll&#xD;&#xA;del $(OutDir)TwitchLib.Client.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Communication.dll&#xD;&#xA;del $(OutDir)TwitchLib.PubSub.dll" />
+  </Target>
 </Project>
