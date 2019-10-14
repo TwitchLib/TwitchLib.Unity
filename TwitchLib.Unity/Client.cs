@@ -4,6 +4,7 @@ using TwitchLib.Client.Events;
 using TwitchLib.Client.Exceptions;
 using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
+using TwitchLib.Communication.Events;
 using UnityEngine;
 
 namespace TwitchLib.Unity
@@ -126,7 +127,7 @@ namespace TwitchLib.Unity
         /// <summary>
         /// Fires when bot has disconnected.
         /// </summary>
-        public new event EventHandler<OnDisconnectedArgs> OnDisconnected;
+        public new event EventHandler<OnDisconnectedEventArgs> OnDisconnected;
 
         /// <summary>
         /// Forces when bot suffers conneciton error.
@@ -244,7 +245,7 @@ namespace TwitchLib.Unity
             base.OnUserLeft += ((object sender, OnUserLeftArgs e) => { ThreadDispatcher.Enqueue(() => OnUserLeft?.Invoke(sender, e)); });
             base.OnHostingStarted += ((object sender, OnHostingStartedArgs e) => { ThreadDispatcher.Enqueue(() => OnHostingStarted?.Invoke(sender, e)); });
             base.OnHostingStopped += ((object sender, OnHostingStoppedArgs e) => { ThreadDispatcher.Enqueue(() => OnHostingStopped?.Invoke(sender, e)); });
-            base.OnDisconnected += ((object sender, OnDisconnectedArgs e) => { ThreadDispatcher.Enqueue(() => OnDisconnected?.Invoke(sender, e)); });
+            base.OnDisconnected += ((object sender, OnDisconnectedEventArgs e) => { ThreadDispatcher.Enqueue(() => OnDisconnected?.Invoke(sender, e)); });
             base.OnConnectionError += ((object sender, OnConnectionErrorArgs e) => { ThreadDispatcher.Enqueue(() => OnConnectionError?.Invoke(sender, e)); });
             base.OnChatCleared += ((object sender, OnChatClearedArgs e) => { ThreadDispatcher.Enqueue(() => OnChatCleared?.Invoke(sender, e)); });
             base.OnUserTimedout += ((object sender, OnUserTimedoutArgs e) => { ThreadDispatcher.Enqueue(() => OnUserTimedout?.Invoke(sender, e)); });

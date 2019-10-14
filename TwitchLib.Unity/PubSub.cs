@@ -56,7 +56,7 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnChannelSubscriptionArgs> OnChannelSubscription;
         #endregion
 
-        public PubSub(EndPoint proxy = null) : base(null, proxy)
+        public PubSub(EndPoint proxy = null) : base(null)
         {
             ThreadDispatcher.EnsureCreated();
 
