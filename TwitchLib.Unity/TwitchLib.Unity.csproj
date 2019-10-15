@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Unity</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Description>Unity wrapper system for TwitchLib</Description>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>LuckyNoS7evin</Authors>
@@ -11,37 +11,61 @@
     <PackageIconUrl>https://colejelinek.com/dev/twitchlib.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Unity</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <Copyright>Copyright 2018</Copyright>
-    <PackageReleaseNotes>Initial release of TwitchLib Unity component.</PackageReleaseNotes>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageReleaseNotes>Major Update of TwitchLib.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/TwitchLib/TwitchLib.Unity</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library unity3d unity dotnet c# csharp net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
+  
+  <Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
+    <Message Text="Building"/>
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="$([System.String]::Copy('%(Filename)').Contains('System.'))" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' == 'Microsoft.CSharp'" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' == 'Microsoft.Extensions.DependencyInjection.Abstractions'" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' == 'Microsoft.Extensions.Logging'" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' == 'Microsoft.Extensions.Options'" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' == 'Microsoft.Extensions.Primitives'" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' == 'Serilog'" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' == 'Serilog.Extensions.Logging'" />
+    </ItemGroup>
+  </Target>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>RELEASE;NET452</DefineConstants>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+  
   <ItemGroup>
-    <PackageReference Include="ILMerge" Version="2.14.1208" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
+    <PackageReference Include="TwitchLib.Client" Version="3.0.4" />
+    <PackageReference Include="TwitchLib.PubSub" Version="3.0.3" />
   </ItemGroup>
+  
   <ItemGroup>
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Core.Enums\TwitchLib.Api.Core.Enums.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Core.Interfaces\TwitchLib.Api.Core.Interfaces.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Core.Models\TwitchLib.Api.Core.Models.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Core\TwitchLib.Api.Core.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Helix.Models\TwitchLib.Api.Helix.Models.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Helix\TwitchLib.Api.Helix.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.V5.Models\TwitchLib.Api.V5.Models.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.V5\TwitchLib.Api.V5.csproj" />
     <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api\TwitchLib.Api.csproj" />
-    <ProjectReference Include="..\TwitchLib.Client\TwitchLib.Client\TwitchLib.Client.csproj" />
-    <ProjectReference Include="..\TwitchLib.PubSub\TwitchLib.PubSub\TwitchLib.PubSub.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>..\Assemblies\UnityEngine.dll</HintPath>
+      <Private>false</Private>
     </Reference>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="del $(OutDir)*.pdb&#xD;&#xA;..\Assemblies\ilmerge /out:$(OutDir)TwitchLib.Unity.dll $(OutDir)TwitchLib.Unity.dll $(OutDir)Microsoft.Extensions.Logging.Abstractions.dll $(OutDir)Newtonsoft.Json.dll $(OutDir)Serilog.dll $(OutDir)Serilog.Extensions.Logging.dll $(OutDir)SuperSocket.ClientEngine.dll $(OutDir)TwitchLib.Api.dll $(OutDir)TwitchLib.Client.dll $(OutDir)TwitchLib.PubSub.dll $(OutDir)WebSocket4Net.dll $(OutDir)TwitchLib.Api.Models.dll $(OutDir)TwitchLib.Api.Interfaces.dll $(OutDir)TwitchLib.Client.Models.dll $(OutDir)TwitchLib.Api.Enums.dll $(OutDir)TwitchLib.Client.Enums.dll&#xD;&#xA;del $(OutDir)Microsoft.Extensions.Logging.Abstractions.dll &#xD;&#xA;del $(OutDir)Newtonsoft.Json.dll&#xD;&#xA;del $(OutDir)Serilog.dll &#xD;&#xA;del $(OutDir)Serilog.Extensions.Logging.dll &#xD;&#xA;del $(OutDir)SuperSocket.ClientEngine.dll &#xD;&#xA;del $(OutDir)TwitchLib.Api.dll &#xD;&#xA;del $(OutDir)TwitchLib.Client.dll &#xD;&#xA;del $(OutDir)TwitchLib.PubSub.dll &#xD;&#xA;del $(OutDir)WebSocket4Net.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Interfaces.dll&#xD;&#xA;del $(OutDir)TwitchLib.Client.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Enums.dll&#xD;&#xA;del $(OutDir)TwitchLib.Client.Enums.dll&#xD;&#xA;del $(OutDir)UnityEngine.*" />
   </Target>
+
 </Project>
