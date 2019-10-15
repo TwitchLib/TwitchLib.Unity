@@ -45,6 +45,18 @@
     <PackageReference Include="TwitchLib.Client" Version="3.0.4" />
     <PackageReference Include="TwitchLib.PubSub" Version="3.0.3" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Core.Enums\TwitchLib.Api.Core.Enums.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Core.Interfaces\TwitchLib.Api.Core.Interfaces.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Core.Models\TwitchLib.Api.Core.Models.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Core\TwitchLib.Api.Core.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Helix.Models\TwitchLib.Api.Helix.Models.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.Helix\TwitchLib.Api.Helix.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.V5.Models\TwitchLib.Api.V5.Models.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api.V5\TwitchLib.Api.V5.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api\TwitchLib.Api.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="UnityEngine">
