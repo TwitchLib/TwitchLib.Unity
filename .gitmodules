@@ -1,6 +1,3 @@
 [submodule "TwitchLib.Api"]
 	path = TwitchLib.Api
 	url = https://github.com/TwitchLib/TwitchLib.Api
-[submodule "TwitchLib.PubSub"]
-	path = TwitchLib.PubSub
-	url = https://github.com/TwitchLib/TwitchLib.PubSub

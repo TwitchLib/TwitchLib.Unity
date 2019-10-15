@@ -43,11 +43,7 @@
   <ItemGroup>
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
     <PackageReference Include="TwitchLib.Client" Version="3.0.4" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api\TwitchLib.Api.csproj" />
-    <ProjectReference Include="..\TwitchLib.PubSub\TwitchLib.PubSub\TwitchLib.PubSub.csproj" />
+    <PackageReference Include="TwitchLib.PubSub" Version="3.0.3" />
   </ItemGroup>
 
   <ItemGroup>
