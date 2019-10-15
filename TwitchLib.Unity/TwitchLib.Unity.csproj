@@ -21,7 +21,7 @@
     <FileVersion>1.0.1.0</FileVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-
+  
   <Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
     <ItemGroup>
       <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="$([System.String]::Copy('%(Filename)').Contains('System.'))" />
@@ -36,15 +36,20 @@
   </Target>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>RELEASE;NET452</DefineConstants>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+  
   <ItemGroup>
-    <PackageReference Include="ILMerge" Version="2.14.1208" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\TwitchLib.Api\TwitchLib.Api\TwitchLib.Api.csproj" />
+    <ProjectReference Include="..\TwitchLib.Client\TwitchLib.Client\TwitchLib.Client.csproj" />
+    <ProjectReference Include="..\TwitchLib.PubSub\TwitchLib.PubSub\TwitchLib.PubSub.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>..\Assemblies\UnityEngine.dll</HintPath>
@@ -52,6 +57,8 @@
     </Reference>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="..\Assemblies\ilmerge /out:$(OutDir)TwitchLib.Unity.dll $(OutDir)TwitchLib.Unity.dll $(OutDir)Microsoft.Extensions.Logging.Abstractions.dll $(OutDir)Newtonsoft.Json.dll $(OutDir)TwitchLib.Api.Core.dll $(OutDir)TwitchLib.Api.Core.Enums.dll $(OutDir)TwitchLib.Api.Core.Interfaces.dll $(OutDir)TwitchLib.Api.Core.Models.dll $(OutDir)TwitchLib.Api.dll $(OutDir)TwitchLib.Api.Helix.dll $(OutDir)TwitchLib.Api.Helix.Models.dll $(OutDir)TwitchLib.Api.V5.dll $(OutDir)TwitchLib.Api.V5.Models.dll $(OutDir)TwitchLib.Client.dll $(OutDir)TwitchLib.Client.Enums.dll $(OutDir)TwitchLib.Client.Models.dll $(OutDir)TwitchLib.Communication.dll $(OutDir)TwitchLib.PubSub.dll&#xD;&#xA;del $(OutDir)TwitchLib.Unity.deps.json&#xD;&#xA;del $(OutDir)TwitchLib.Unity.pdb&#xD;&#xA;del $(OutDir)Microsoft.Extensions.Logging.Abstractions.dll&#xD;&#xA;del $(OutDir)Newtonsoft.Json.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Core.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Core.Enums.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Core.Interfaces.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Core.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Helix.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.Helix.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.V5.dll&#xD;&#xA;del $(OutDir)TwitchLib.Api.V5.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Client.dll&#xD;&#xA;del $(OutDir)TwitchLib.Client.Enums.dll&#xD;&#xA;del $(OutDir)TwitchLib.Client.Models.dll&#xD;&#xA;del $(OutDir)TwitchLib.Communication.dll&#xD;&#xA;del $(OutDir)TwitchLib.PubSub.dll" />
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="del $(OutDir)TwitchLib.Unity.deps.json&#xD;&#xA;del $(OutDir)*.pdb" />
   </Target>
 </Project>
