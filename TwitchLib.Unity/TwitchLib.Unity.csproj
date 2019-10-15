@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -23,6 +23,7 @@
   </PropertyGroup>
   
   <Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
+    <Message Text="Building"/>
     <ItemGroup>
       <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="$([System.String]::Copy('%(Filename)').Contains('System.'))" />
       <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' == 'Microsoft.CSharp'" />
@@ -66,7 +67,5 @@
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
   </Target>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="del $(OutDir)TwitchLib.Unity.deps.json&#xD;&#xA;del $(OutDir)*.pdb" />
-  </Target>
+
 </Project>
