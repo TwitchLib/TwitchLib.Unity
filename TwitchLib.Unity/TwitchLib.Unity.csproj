@@ -23,7 +23,7 @@
   </PropertyGroup>
   
   <Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
-    <Message Text="Building"/>
+    <Message Text="Building" />
     <ItemGroup>
       <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="$([System.String]::Copy('%(Filename)').Contains('System.'))" />
       <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' == 'Microsoft.CSharp'" />
@@ -66,6 +66,9 @@
     </Reference>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="del &quot;$(OutDir)TwitchLib.Unity.deps.json&quot;&#xD;&#xA;del &quot;$(OutDir)*.pdb&quot;" />
   </Target>
 
 </Project>
