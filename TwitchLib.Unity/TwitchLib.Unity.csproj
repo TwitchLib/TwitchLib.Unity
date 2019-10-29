@@ -43,12 +43,15 @@
   
   <ItemGroup>
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
-    <PackageReference Include="TwitchLib.Api" Version="3.0.6-CI-20191013-060230" />
-    <PackageReference Include="TwitchLib.Client" Version="3.0.6-CI-20190916-073325" />
-    <PackageReference Include="TwitchLib.PubSub" Version="3.0.6-CI-20190920-073200" />
+    <PackageReference Include="TwitchLib.Api" Version="3.1.2" />
+    <PackageReference Include="TwitchLib.Client" Version="3.1.4" />
+    <PackageReference Include="TwitchLib.PubSub" Version="3.1.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="UnityEditor">
+      <HintPath>..\Assemblies\UnityEditor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Assemblies\UnityEngine.dll</HintPath>
       <Private>false</Private>
