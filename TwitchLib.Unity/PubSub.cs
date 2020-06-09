@@ -54,6 +54,34 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnWhisperArgs> OnWhisper;
         /// <summary>EventHandler for channel subscriptions.</summary>
         public new event EventHandler<OnChannelSubscriptionArgs> OnChannelSubscription;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnChannelCommerceReceivedArgs> OnChannelCommerceReceived;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnChannelExtensionBroadcastArgs> OnChannelExtensionBroadcast;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnFollowArgs> OnFollow;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnCustomRewardCreatedArgs> OnCustomRewardCreated;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnCustomRewardUpdatedArgs> OnCustomRewardUpdated;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnCustomRewardDeletedArgs> OnCustomRewardDeleted;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnRewardRedeemedArgs> OnRewardRedeemed;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnLeaderboardEventArgs> OnLeaderboardSubs;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnLeaderboardEventArgs> OnLeaderboardBits;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnRaidUpdateArgs> OnRaidUpdate;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnRaidUpdateV2Args> OnRaidUpdateV2;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnRaidGoArgs> OnRaidGo;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnMessageDeletedArgs> OnMessageDeleted;
+        /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnLogArgs> OnLog;
         #endregion
 
         public PubSub(EndPoint proxy = null) : base(null)
@@ -82,6 +110,20 @@ namespace TwitchLib.Unity
             base.OnViewCount += ((object sender, OnViewCountArgs e) => { ThreadDispatcher.Enqueue(() => OnViewCount?.Invoke(sender, e)); });
             base.OnWhisper += ((object sender, OnWhisperArgs e) => { ThreadDispatcher.Enqueue(() => OnWhisper?.Invoke(sender, e)); });
             base.OnChannelSubscription += ((object sender, OnChannelSubscriptionArgs e) => { ThreadDispatcher.Enqueue(() => OnChannelSubscription?.Invoke(sender, e)); });
+            base.OnChannelCommerceReceived += ((object sender, OnChannelCommerceReceivedArgs e) => { ThreadDispatcher.Enqueue(() => OnChannelCommerceReceived?.Invoke(sender, e)); });
+            base.OnChannelExtensionBroadcast += ((object sender, OnChannelExtensionBroadcastArgs e) => { ThreadDispatcher.Enqueue(() => OnChannelExtensionBroadcast?.Invoke(sender, e)); });
+            base.OnFollow += ((object sender, OnFollowArgs e) => { ThreadDispatcher.Enqueue(() => OnFollow?.Invoke(sender, e)); });
+            base.OnCustomRewardCreated += ((object sender, OnCustomRewardCreatedArgs e) => { ThreadDispatcher.Enqueue(() => OnCustomRewardCreated?.Invoke(sender, e)); });
+            base.OnCustomRewardUpdated += ((object sender, OnCustomRewardUpdatedArgs e) => { ThreadDispatcher.Enqueue(() => OnCustomRewardUpdated?.Invoke(sender, e)); });
+            base.OnCustomRewardDeleted += ((object sender, OnCustomRewardDeletedArgs e) => { ThreadDispatcher.Enqueue(() => OnCustomRewardDeleted?.Invoke(sender, e)); });
+            base.OnRewardRedeemed += ((object sender, OnRewardRedeemedArgs e) => { ThreadDispatcher.Enqueue(() => OnRewardRedeemed?.Invoke(sender, e)); });
+            base.OnLeaderboardSubs += ((object sender, OnLeaderboardEventArgs e) => { ThreadDispatcher.Enqueue(() => OnLeaderboardSubs?.Invoke(sender, e)); });
+            base.OnLeaderboardBits += ((object sender, OnLeaderboardEventArgs e) => { ThreadDispatcher.Enqueue(() => OnLeaderboardBits?.Invoke(sender, e)); });
+            base.OnRaidUpdate += ((object sender, OnRaidUpdateArgs e) => { ThreadDispatcher.Enqueue(() => OnRaidUpdate?.Invoke(sender, e)); });
+            base.OnRaidUpdateV2 += ((object sender, OnRaidUpdateV2Args e) => { ThreadDispatcher.Enqueue(() => OnRaidUpdateV2?.Invoke(sender, e)); });
+            base.OnRaidGo += ((object sender, OnRaidGoArgs e) => { ThreadDispatcher.Enqueue(() => OnRaidGo?.Invoke(sender, e)); });
+            base.OnMessageDeleted += ((object sender, OnMessageDeletedArgs e) => { ThreadDispatcher.Enqueue(() => OnMessageDeleted?.Invoke(sender, e)); });
+            base.OnLog += ((object sender, OnLogArgs e) => { ThreadDispatcher.Enqueue(() => OnLog?.Invoke(sender, e)); });
         }
     }
 }
