@@ -206,6 +206,21 @@ namespace TwitchLib.Unity
 
         /// <summary>Fires when data is received from Twitch that is not able to be parsed.</summary>
         public new event EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
+
+        /// <summary>Fires when named event occurs.</summary>
+        public new event EventHandler<OnMessageClearedArgs> OnMessageCleared;
+        /// <summary>Fires when named event occurs.</summary>
+        public new event EventHandler<OnReconnectedEventArgs> OnReconnected;
+        /// <summary>Fires when named event occurs.</summary>
+        public new event EventHandler<OnWhisperThrottledEventArgs> OnWhisperThrottled;
+        /// <summary>Fires when named event occurs.</summary>
+        public new event EventHandler<OnMessageThrottledEventArgs> OnMessageThrottled;
+        /// <summary>Fires when named event occurs.</summary>
+        public new event EventHandler<OnCommunitySubscriptionArgs> OnCommunitySubscription;
+        /// <summary>Fires when named event occurs.</summary>
+        public new event EventHandler<OnErrorEventArgs> OnError;
+        /// <summary>Fires when named event occurs.</summary>
+        public new event EventHandler<OnVIPsReceivedArgs> OnVIPsReceived;
         #endregion
 
         public Client() : base(null)
@@ -264,6 +279,13 @@ namespace TwitchLib.Unity
             base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { ThreadDispatcher.Enqueue(() => OnUnaccountedFor?.Invoke(sender, e)); });
             base.OnSelfRaidError += ((object sender, EventArgs e) => { ThreadDispatcher.Enqueue(() => OnSelfRaidError?.Invoke(sender, e)); });
             base.OnNoPermissionError += ((object sender, EventArgs e) => { ThreadDispatcher.Enqueue(() => OnNoPermissionError?.Invoke(sender, e)); });
+            base.OnMessageCleared += ((object sender, OnMessageClearedArgs e) => { ThreadDispatcher.Enqueue(() => OnMessageCleared?.Invoke(sender, e)); });
+            base.OnReconnected += ((object sender, OnReconnectedEventArgs e) => { ThreadDispatcher.Enqueue(() => OnReconnected?.Invoke(sender, e)); });
+            base.OnWhisperThrottled += ((object sender, OnWhisperThrottledEventArgs e) => { ThreadDispatcher.Enqueue(() => OnWhisperThrottled?.Invoke(sender, e)); });
+            base.OnMessageThrottled += ((object sender, OnMessageThrottledEventArgs e) => { ThreadDispatcher.Enqueue(() => OnMessageThrottled?.Invoke(sender, e)); });
+            base.OnCommunitySubscription += ((object sender, OnCommunitySubscriptionArgs e) => { ThreadDispatcher.Enqueue(() => OnCommunitySubscription?.Invoke(sender, e)); });
+            base.OnError += ((object sender, OnErrorEventArgs e) => { ThreadDispatcher.Enqueue(() => OnError?.Invoke(sender, e)); });
+            base.OnVIPsReceived += ((object sender, OnVIPsReceivedArgs e) => { ThreadDispatcher.Enqueue(() => OnVIPsReceived?.Invoke(sender, e)); });
         }
 
         private new void HandleNotInitialized()
