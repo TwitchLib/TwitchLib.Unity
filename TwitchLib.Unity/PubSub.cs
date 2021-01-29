@@ -82,6 +82,10 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnMessageDeletedArgs> OnMessageDeleted;
         /// <summary>EventHandler for named event.</summary>
         public new event EventHandler<OnLogArgs> OnLog;
+        /// <summary>EventHandler for named event</summary>
+        public new event EventHandler<OnCommercialArgs> OnCommercial;
+        /// <summary>EventHandler for named event</summary>
+        public new event EventHandler<OnPredictionArgs> OnPrediction;
         #endregion
 
         public PubSub(EndPoint proxy = null) : base(null)
@@ -124,6 +128,8 @@ namespace TwitchLib.Unity
             base.OnRaidGo += ((object sender, OnRaidGoArgs e) => { ThreadDispatcher.Enqueue(() => OnRaidGo?.Invoke(sender, e)); });
             base.OnMessageDeleted += ((object sender, OnMessageDeletedArgs e) => { ThreadDispatcher.Enqueue(() => OnMessageDeleted?.Invoke(sender, e)); });
             base.OnLog += ((object sender, OnLogArgs e) => { ThreadDispatcher.Enqueue(() => OnLog?.Invoke(sender, e)); });
+            base.OnCommercial += ((object sender, OnCommercialArgs e) => { ThreadDispatcher.Enqueue(() => OnCommercial?.Invoke(sender, e)); });
+            base.OnPrediction += ((object sender, OnPredictionArgs e) => { ThreadDispatcher.Enqueue(() => OnPrediction?.Invoke(sender, e)); });
         }
     }
 }
