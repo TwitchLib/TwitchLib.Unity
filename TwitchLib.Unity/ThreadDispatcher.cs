@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace TwitchLib.Unity
 	{
 		private static ThreadDispatcher _instance;
 
-		private static Queue<Action> _executionQueue = new Queue<Action>();
+		private static ConcurrentQueue<Action> _executionQueue = new ConcurrentQueue<Action>();
 
 		/// <summary>
 		/// Ensures a thread dispatcher is created if there is none.
@@ -33,11 +33,18 @@ namespace TwitchLib.Unity
 
 		private void Update()
 		{
-			//storing the count here instead of locking the queue so we don't end up with a deadlock when one of the actions queues another action
-			int count = _executionQueue.Count;
-			for (int i = 0; i < count; i++)
-				_executionQueue.Dequeue().Invoke();
-		}
+            bool gotItemFromQueue = true;
+            while (gotItemFromQueue) { 
+
+                Action action;
+                gotItemFromQueue = _executionQueue.TryDequeue(out action);
+
+                if (gotItemFromQueue && action != null)
+                {
+                    action.Invoke();
+                }
+            }
+        }
 
 		private static ThreadDispatcher CreateThreadDispatcherSingleton(string callerMemberName)
 		{
