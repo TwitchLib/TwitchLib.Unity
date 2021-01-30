@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Unity</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Description>Unity wrapper system for TwitchLib</Description>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>LuckyNoS7evin</Authors>
@@ -17,8 +17,8 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library unity3d unity dotnet c# csharp net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   
