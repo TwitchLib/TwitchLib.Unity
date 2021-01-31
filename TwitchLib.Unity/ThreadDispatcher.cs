@@ -33,13 +33,10 @@ namespace TwitchLib.Unity
 
 		private void Update()
 		{
-            bool gotItemFromQueue = true;
-            while (gotItemFromQueue) { 
-
+            while (!_executionQueue.IsEmpty)
+            {
                 Action action;
-                gotItemFromQueue = _executionQueue.TryDequeue(out action);
-
-                if (gotItemFromQueue && action != null)
+                if (_executionQueue.TryDequeue(out action))
                 {
                     action.Invoke();
                 }
