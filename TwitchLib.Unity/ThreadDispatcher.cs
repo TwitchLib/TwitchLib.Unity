@@ -33,15 +33,15 @@ namespace TwitchLib.Unity
 
 		private void Update()
 		{
-            while (!_executionQueue.IsEmpty)
-            {
-                Action action;
-                if (_executionQueue.TryDequeue(out action))
-                {
-                    action.Invoke();
-                }
-            }
-        }
+			while (!_executionQueue.IsEmpty)
+			{
+				Action action;
+				if (_executionQueue.TryDequeue(out action))
+				{
+					action.Invoke();
+				}
+			}
+		}
 
 		private static ThreadDispatcher CreateThreadDispatcherSingleton(string callerMemberName)
 		{
