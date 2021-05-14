@@ -100,6 +100,16 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnReSubscriberArgs> OnReSubscriber;
 
         /// <summary>
+        /// Fires when a current Prime gaming subscriber converts to a paid subscription.
+        /// </summary>
+        public new event EventHandler<OnPrimePaidSubscriberArgs> OnPrimePaidSubscriber;
+
+        /// <summary>
+        /// Fires when a current gifted subscriber converts to a paid subscription.
+        /// </summary>
+        public new event EventHandler<OnContinuedGiftedSubscriptionArgs> OnContinuedGiftedSubscription;
+
+        /// <summary>
         /// Fires when a hosted streamer goes offline and hosting is killed.
         /// </summary>
         public new event EventHandler OnHostLeft;
@@ -255,6 +265,8 @@ namespace TwitchLib.Unity
             base.OnModeratorLeft += ((object sender, OnModeratorLeftArgs e) => { ThreadDispatcher.Enqueue(() => OnModeratorLeft?.Invoke(sender, e)); });
             base.OnNewSubscriber += ((object sender, OnNewSubscriberArgs e) => { ThreadDispatcher.Enqueue(() => OnNewSubscriber?.Invoke(sender, e)); });
             base.OnReSubscriber += ((object sender, OnReSubscriberArgs e) => { ThreadDispatcher.Enqueue(() => OnReSubscriber?.Invoke(sender, e)); });
+            base.OnPrimePaidSubscriber += ((object sender, OnPrimePaidSubscriberArgs e) => { ThreadDispatcher.Enqueue(() => OnPrimePaidSubscriber?.Invoke(sender, e)); });
+            base.OnContinuedGiftedSubscription += ((object sender, OnContinuedGiftedSubscriptionArgs e) => { ThreadDispatcher.Enqueue(() => OnContinuedGiftedSubscription?.Invoke(sender, e)); });
             base.OnHostLeft += ((object sender, EventArgs arg) => { ThreadDispatcher.Enqueue(() => OnHostLeft?.Invoke(sender, arg)); });
             base.OnExistingUsersDetected += ((object sender, OnExistingUsersDetectedArgs e) => { ThreadDispatcher.Enqueue(() => OnExistingUsersDetected?.Invoke(sender, e)); });
             base.OnUserLeft += ((object sender, OnUserLeftArgs e) => { ThreadDispatcher.Enqueue(() => OnUserLeft?.Invoke(sender, e)); });

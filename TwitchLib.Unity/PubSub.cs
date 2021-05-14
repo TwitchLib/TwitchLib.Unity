@@ -69,6 +69,8 @@ namespace TwitchLib.Unity
         /// <summary>EventHandler for named event.</summary>
         public new event EventHandler<OnRewardRedeemedArgs> OnRewardRedeemed;
         /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnBitsReceivedV2Args> OnBitsReceivedV2;
+        /// <summary>EventHandler for named event.</summary>
         public new event EventHandler<OnLeaderboardEventArgs> OnLeaderboardSubs;
         /// <summary>EventHandler for named event.</summary>
         public new event EventHandler<OnLeaderboardEventArgs> OnLeaderboardBits;
@@ -121,6 +123,7 @@ namespace TwitchLib.Unity
             base.OnCustomRewardUpdated += ((object sender, OnCustomRewardUpdatedArgs e) => { ThreadDispatcher.Enqueue(() => OnCustomRewardUpdated?.Invoke(sender, e)); });
             base.OnCustomRewardDeleted += ((object sender, OnCustomRewardDeletedArgs e) => { ThreadDispatcher.Enqueue(() => OnCustomRewardDeleted?.Invoke(sender, e)); });
             base.OnRewardRedeemed += ((object sender, OnRewardRedeemedArgs e) => { ThreadDispatcher.Enqueue(() => OnRewardRedeemed?.Invoke(sender, e)); });
+            base.OnBitsReceivedV2 += ((object sender, OnBitsReceivedV2Args e) => { ThreadDispatcher.Enqueue(() => OnBitsReceivedV2?.Invoke(sender, e)); });
             base.OnLeaderboardSubs += ((object sender, OnLeaderboardEventArgs e) => { ThreadDispatcher.Enqueue(() => OnLeaderboardSubs?.Invoke(sender, e)); });
             base.OnLeaderboardBits += ((object sender, OnLeaderboardEventArgs e) => { ThreadDispatcher.Enqueue(() => OnLeaderboardBits?.Invoke(sender, e)); });
             base.OnRaidUpdate += ((object sender, OnRaidUpdateArgs e) => { ThreadDispatcher.Enqueue(() => OnRaidUpdate?.Invoke(sender, e)); });
