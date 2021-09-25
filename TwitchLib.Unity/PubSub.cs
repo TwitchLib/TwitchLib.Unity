@@ -69,6 +69,8 @@ namespace TwitchLib.Unity
         /// <summary>EventHandler for named event.</summary>
         public new event EventHandler<OnRewardRedeemedArgs> OnRewardRedeemed;
         /// <summary>EventHandler for named event.</summary>
+        public new event EventHandler<OnChannelPointsRewardRedeemedArgs> OnChannelPointsRewardRedeemed;
+        /// <summary>EventHandler for named event.</summary>
         public new event EventHandler<OnBitsReceivedV2Args> OnBitsReceivedV2;
         /// <summary>EventHandler for named event.</summary>
         public new event EventHandler<OnLeaderboardEventArgs> OnLeaderboardSubs;
@@ -88,6 +90,10 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnCommercialArgs> OnCommercial;
         /// <summary>EventHandler for named event</summary>
         public new event EventHandler<OnPredictionArgs> OnPrediction;
+        /// <summary>EventHandler for named event</summary>
+        public new event EventHandler<OnAutomodCaughtMessageArgs> OnAutomodCaughtMessage;
+
+        public new event EventHandler<OnAutomodCaughtUserMessage> OnAutomodCaughtUserMessage;
         #endregion
 
         public PubSub(EndPoint proxy = null) : base(null)
@@ -123,6 +129,7 @@ namespace TwitchLib.Unity
             base.OnCustomRewardUpdated += ((object sender, OnCustomRewardUpdatedArgs e) => { ThreadDispatcher.Enqueue(() => OnCustomRewardUpdated?.Invoke(sender, e)); });
             base.OnCustomRewardDeleted += ((object sender, OnCustomRewardDeletedArgs e) => { ThreadDispatcher.Enqueue(() => OnCustomRewardDeleted?.Invoke(sender, e)); });
             base.OnRewardRedeemed += ((object sender, OnRewardRedeemedArgs e) => { ThreadDispatcher.Enqueue(() => OnRewardRedeemed?.Invoke(sender, e)); });
+            base.OnChannelPointsRewardRedeemed += (object sender, OnChannelPointsRewardRedeemedArgs e) => { ThreadDispatcher.Enqueue(() => OnChannelPointsRewardRedeemed?.Invoke(sender, e)); };
             base.OnBitsReceivedV2 += ((object sender, OnBitsReceivedV2Args e) => { ThreadDispatcher.Enqueue(() => OnBitsReceivedV2?.Invoke(sender, e)); });
             base.OnLeaderboardSubs += ((object sender, OnLeaderboardEventArgs e) => { ThreadDispatcher.Enqueue(() => OnLeaderboardSubs?.Invoke(sender, e)); });
             base.OnLeaderboardBits += ((object sender, OnLeaderboardEventArgs e) => { ThreadDispatcher.Enqueue(() => OnLeaderboardBits?.Invoke(sender, e)); });
@@ -133,6 +140,8 @@ namespace TwitchLib.Unity
             base.OnLog += ((object sender, OnLogArgs e) => { ThreadDispatcher.Enqueue(() => OnLog?.Invoke(sender, e)); });
             base.OnCommercial += ((object sender, OnCommercialArgs e) => { ThreadDispatcher.Enqueue(() => OnCommercial?.Invoke(sender, e)); });
             base.OnPrediction += ((object sender, OnPredictionArgs e) => { ThreadDispatcher.Enqueue(() => OnPrediction?.Invoke(sender, e)); });
+            base.OnAutomodCaughtMessage += ((object sender, OnAutomodCaughtMessageArgs e) => { ThreadDispatcher.Enqueue(() => OnAutomodCaughtMessage?.Invoke(sender, e)); });
+            base.OnAutomodCaughtUserMessage += ((object sender, OnAutomodCaughtUserMessage e) => { ThreadDispatcher.Enqueue(() => OnAutomodCaughtUserMessage?.Invoke(sender, e)); });
         }
     }
 }

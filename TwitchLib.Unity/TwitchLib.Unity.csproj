@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TwitchLib.Unity</PackageId>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Description>Unity wrapper system for TwitchLib</Description>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>LuckyNoS7evin</Authors>
@@ -12,13 +12,13 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Unity</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <Copyright>Copyright 2021</Copyright>
-    <PackageReleaseNotes>Major Update of TwitchLib.</PackageReleaseNotes>
+    <PackageReleaseNotes>Version bumps for Unity to match latest dev branch of TwitchLib.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/TwitchLib/TwitchLib.Unity</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library unity3d unity dotnet c# csharp net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   
@@ -47,9 +47,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
-    <PackageReference Include="TwitchLib.Api" Version="3.2.4-preview-241647a94fd5b8363f7f41c35fa5fd33e760127b" />
-    <PackageReference Include="TwitchLib.Client" Version="3.2.3-preview-94b33cd801bf51e1d81b179ce10c7d896072b4c3" />
-    <PackageReference Include="TwitchLib.PubSub" Version="3.2.3-preview-5500be4a524d8812e7bd37de4288610422b41fe6" />
+    <PackageReference Include="TwitchLib.Api" Version="3.2.5-preview-9a3c9a73b72f479e1c27fec4e1c7ec77dd69f125" />
+    <PackageReference Include="TwitchLib.Client" Version="3.2.3" />
+    <PackageReference Include="TwitchLib.PubSub" Version="3.2.3" />
   </ItemGroup>
 
   <ItemGroup>
