@@ -55,8 +55,6 @@ namespace TwitchLib.Unity
         /// <summary>EventHandler for channel subscriptions.</summary>
         public new event EventHandler<OnChannelSubscriptionArgs> OnChannelSubscription;
         /// <summary>EventHandler for named event.</summary>
-        public new event EventHandler<OnChannelCommerceReceivedArgs> OnChannelCommerceReceived;
-        /// <summary>EventHandler for named event.</summary>
         public new event EventHandler<OnChannelExtensionBroadcastArgs> OnChannelExtensionBroadcast;
         /// <summary>EventHandler for named event.</summary>
         public new event EventHandler<OnFollowArgs> OnFollow;
@@ -122,7 +120,6 @@ namespace TwitchLib.Unity
             base.OnViewCount += ((object sender, OnViewCountArgs e) => { ThreadDispatcher.Enqueue(() => OnViewCount?.Invoke(sender, e)); });
             base.OnWhisper += ((object sender, OnWhisperArgs e) => { ThreadDispatcher.Enqueue(() => OnWhisper?.Invoke(sender, e)); });
             base.OnChannelSubscription += ((object sender, OnChannelSubscriptionArgs e) => { ThreadDispatcher.Enqueue(() => OnChannelSubscription?.Invoke(sender, e)); });
-            base.OnChannelCommerceReceived += ((object sender, OnChannelCommerceReceivedArgs e) => { ThreadDispatcher.Enqueue(() => OnChannelCommerceReceived?.Invoke(sender, e)); });
             base.OnChannelExtensionBroadcast += ((object sender, OnChannelExtensionBroadcastArgs e) => { ThreadDispatcher.Enqueue(() => OnChannelExtensionBroadcast?.Invoke(sender, e)); });
             base.OnFollow += ((object sender, OnFollowArgs e) => { ThreadDispatcher.Enqueue(() => OnFollow?.Invoke(sender, e)); });
             base.OnCustomRewardCreated += ((object sender, OnCustomRewardCreatedArgs e) => { ThreadDispatcher.Enqueue(() => OnCustomRewardCreated?.Invoke(sender, e)); });

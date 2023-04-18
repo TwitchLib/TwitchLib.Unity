@@ -4,6 +4,8 @@
 # Files used to weave for NuGet
 TwitchLib/FodyWeavers.xml
 TwitchLib/packages.config
+TwitchLib.Unity/FodyWeavers.xml
+TwitchLib.Unity/FodyWeavers.xsd
 
 # User-specific files
 *.suo
