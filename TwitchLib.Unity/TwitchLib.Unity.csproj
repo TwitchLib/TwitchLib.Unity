@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Unity</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <Copyright>Copyright 2021</Copyright>
-    <PackageReleaseNotes>Version bumps for Unity to match latest dev branch of TwitchLib.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updates to packages and removed outdated code</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/TwitchLib/TwitchLib.Unity</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library unity3d unity dotnet c# csharp net standard 2.0</PackageTags>
@@ -42,14 +42,14 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.0.0-beta0001">
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
-    <PackageReference Include="TwitchLib.Api" Version="3.2.5-preview-9a3c9a73b72f479e1c27fec4e1c7ec77dd69f125" />
-    <PackageReference Include="TwitchLib.Client" Version="3.2.3" />
-    <PackageReference Include="TwitchLib.PubSub" Version="3.2.3" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+    <PackageReference Include="TwitchLib.Api" Version="3.9.0" />
+    <PackageReference Include="TwitchLib.Client" Version="3.3.1" />
+    <PackageReference Include="TwitchLib.PubSub" Version="3.2.6" />
   </ItemGroup>
 
   <ItemGroup>

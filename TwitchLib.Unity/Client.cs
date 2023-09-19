@@ -11,8 +11,6 @@ namespace TwitchLib.Unity
 {
     public class Client : TwitchClient, ITwitchClient
     {
-        public new bool OverrideBeingHostedCheck { get; set; }
-        
         #region Events
         /// <summary>
         /// Fires whenever a log write happens.
@@ -110,11 +108,6 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnContinuedGiftedSubscriptionArgs> OnContinuedGiftedSubscription;
 
         /// <summary>
-        /// Fires when a hosted streamer goes offline and hosting is killed.
-        /// </summary>
-        public new event EventHandler OnHostLeft;
-
-        /// <summary>
         /// Fires when Twitch notifies client of existing users in chat.
         /// </summary>
         public new event EventHandler<OnExistingUsersDetectedArgs> OnExistingUsersDetected;
@@ -123,16 +116,6 @@ namespace TwitchLib.Unity
         /// Fires when a PART message is received from Twitch regarding a particular viewer
         /// </summary>
         public new event EventHandler<OnUserLeftArgs> OnUserLeft;
-
-        /// <summary>
-        /// Fires when the joined channel begins hosting another channel.
-        /// </summary>
-        public new event EventHandler<OnHostingStartedArgs> OnHostingStarted;
-
-        /// <summary>
-        /// Fires when the joined channel quits hosting another channel.
-        /// </summary>
-        public new event EventHandler<OnHostingStoppedArgs> OnHostingStopped;
 
         /// <summary>
         /// Fires when bot has disconnected.
@@ -180,16 +163,6 @@ namespace TwitchLib.Unity
         public new event EventHandler<OnSendReceiveDataArgs> OnSendReceiveData;
 
         /// <summary>
-        /// Fires when client receives notice that a joined channel is hosting another channel.
-        /// </summary>
-        public new event EventHandler<OnNowHostingArgs> OnNowHosting;
-
-        /// <summary>
-        /// Fires when the library detects another channel has started hosting the broadcaster's stream. MUST BE CONNECTED AS BROADCASTER.
-        /// </summary>
-        public new event EventHandler<OnBeingHostedArgs> OnBeingHosted;
-
-        /// <summary>
         /// Fires when a raid notification is detected in chat
         /// </summary>
         public new event EventHandler<OnRaidNotificationArgs> OnRaidNotification;
@@ -207,9 +180,6 @@ namespace TwitchLib.Unity
 
         /// <summary>Fires when newly raided channel is mature audience only.</summary>
         public new event EventHandler OnRaidedChannelIsMatureAudience;
-
-        /// <summary>Fires when a ritual for a new chatter is received.</summary>
-        public new event EventHandler<OnRitualNewChatterArgs> OnRitualNewChatter;
 
         /// <summary>Fires when the client was unable to join a channel.</summary>
         public new event EventHandler<OnFailureToReceiveJoinConfirmationArgs> OnFailureToReceiveJoinConfirmation;
@@ -237,18 +207,12 @@ namespace TwitchLib.Unity
         {
             ThreadDispatcher.EnsureCreated();
 
-            base.OverrideBeingHostedCheck = true;
-
             base.OnLog += (object sender, OnLogArgs e) => { ThreadDispatcher.Enqueue(() => OnLog?.Invoke(sender, e)); };
             base.OnConnected += ((object sender, OnConnectedArgs e) => { ThreadDispatcher.Enqueue(() => OnConnected?.Invoke(sender, e)); });
 
             base.OnJoinedChannel += ((object sender, OnJoinedChannelArgs e) => {
 
                 ThreadDispatcher.Enqueue(() => OnJoinedChannel?.Invoke(sender, e));
-
-                if (OnBeingHosted == null) return;
-                if (e.Channel.ToLower() != TwitchUsername && !OverrideBeingHostedCheck)
-                    ThreadDispatcher.Enqueue(() => throw new BadListenException("BeingHosted", "You cannot listen to OnBeingHosted unless you are connected to the broadcaster's channel as the broadcaster. You may override this by setting the TwitchClient property OverrideBeingHostedCheck to true."));
             });
 
             base.OnIncorrectLogin += ((object sender, OnIncorrectLoginArgs e) => { ThreadDispatcher.Enqueue(() => OnIncorrectLogin?.Invoke(sender, e)); });
@@ -267,11 +231,8 @@ namespace TwitchLib.Unity
             base.OnReSubscriber += ((object sender, OnReSubscriberArgs e) => { ThreadDispatcher.Enqueue(() => OnReSubscriber?.Invoke(sender, e)); });
             base.OnPrimePaidSubscriber += ((object sender, OnPrimePaidSubscriberArgs e) => { ThreadDispatcher.Enqueue(() => OnPrimePaidSubscriber?.Invoke(sender, e)); });
             base.OnContinuedGiftedSubscription += ((object sender, OnContinuedGiftedSubscriptionArgs e) => { ThreadDispatcher.Enqueue(() => OnContinuedGiftedSubscription?.Invoke(sender, e)); });
-            base.OnHostLeft += ((object sender, EventArgs arg) => { ThreadDispatcher.Enqueue(() => OnHostLeft?.Invoke(sender, arg)); });
             base.OnExistingUsersDetected += ((object sender, OnExistingUsersDetectedArgs e) => { ThreadDispatcher.Enqueue(() => OnExistingUsersDetected?.Invoke(sender, e)); });
             base.OnUserLeft += ((object sender, OnUserLeftArgs e) => { ThreadDispatcher.Enqueue(() => OnUserLeft?.Invoke(sender, e)); });
-            base.OnHostingStarted += ((object sender, OnHostingStartedArgs e) => { ThreadDispatcher.Enqueue(() => OnHostingStarted?.Invoke(sender, e)); });
-            base.OnHostingStopped += ((object sender, OnHostingStoppedArgs e) => { ThreadDispatcher.Enqueue(() => OnHostingStopped?.Invoke(sender, e)); });
             base.OnDisconnected += ((object sender, OnDisconnectedEventArgs e) => { ThreadDispatcher.Enqueue(() => OnDisconnected?.Invoke(sender, e)); });
             base.OnConnectionError += ((object sender, OnConnectionErrorArgs e) => { ThreadDispatcher.Enqueue(() => OnConnectionError?.Invoke(sender, e)); });
             base.OnChatCleared += ((object sender, OnChatClearedArgs e) => { ThreadDispatcher.Enqueue(() => OnChatCleared?.Invoke(sender, e)); });
@@ -281,12 +242,9 @@ namespace TwitchLib.Unity
             base.OnModeratorsReceived += ((object sender, OnModeratorsReceivedArgs e) => { ThreadDispatcher.Enqueue(() => OnModeratorsReceived?.Invoke(sender, e)); });
             base.OnChatColorChanged += ((object sender, OnChatColorChangedArgs e) => { ThreadDispatcher.Enqueue(() => OnChatColorChanged?.Invoke(sender, e)); });
             base.OnSendReceiveData += ((object sender, OnSendReceiveDataArgs e) => { ThreadDispatcher.Enqueue(() => OnSendReceiveData?.Invoke(sender, e)); });
-            base.OnNowHosting += ((object sender, OnNowHostingArgs e) => { ThreadDispatcher.Enqueue(() => OnNowHosting?.Invoke(sender, e)); });
-            base.OnBeingHosted += ((object sender, OnBeingHostedArgs e) => { ThreadDispatcher.Enqueue(() => OnBeingHosted?.Invoke(sender, e)); });
             base.OnRaidNotification += ((object sender, OnRaidNotificationArgs e) => { ThreadDispatcher.Enqueue(() => OnRaidNotification?.Invoke(sender, e)); });
             base.OnGiftedSubscription += ((object sender, OnGiftedSubscriptionArgs e) => { ThreadDispatcher.Enqueue(() => OnGiftedSubscription?.Invoke(sender, e)); });
             base.OnRaidedChannelIsMatureAudience += ((object sender, EventArgs arg) => { ThreadDispatcher.Enqueue(() => OnRaidedChannelIsMatureAudience?.Invoke(sender, arg)); });
-            base.OnRitualNewChatter += ((object sender, OnRitualNewChatterArgs e) => { ThreadDispatcher.Enqueue(() => OnRitualNewChatter?.Invoke(sender, e)); });
             base.OnFailureToReceiveJoinConfirmation += ((object sender, OnFailureToReceiveJoinConfirmationArgs e) => { ThreadDispatcher.Enqueue(() => OnFailureToReceiveJoinConfirmation?.Invoke(sender, e)); });
             base.OnUnaccountedFor += ((object sender, OnUnaccountedForArgs e) => { ThreadDispatcher.Enqueue(() => OnUnaccountedFor?.Invoke(sender, e)); });
             base.OnSelfRaidError += ((object sender, EventArgs e) => { ThreadDispatcher.Enqueue(() => OnSelfRaidError?.Invoke(sender, e)); });
