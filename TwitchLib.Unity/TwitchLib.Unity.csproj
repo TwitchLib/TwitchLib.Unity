@@ -42,14 +42,10 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
-    <PackageReference Include="TwitchLib.Api" Version="3.9.0" />
-    <PackageReference Include="TwitchLib.Client" Version="3.3.1" />
-    <PackageReference Include="TwitchLib.PubSub" Version="3.2.6" />
+    <PackageReference Include="TwitchLib.Api" Version="3.10.0-preview-1b109f5" />
+    <PackageReference Include="TwitchLib.Client" Version="4.0.0-preview-c1fda4c609b7b91ec8720e20af4dd080ea577bd8" />
+    <PackageReference Include="TwitchLib.PubSub" Version="4.0.0-preview-f833b1ab1ebef37618dba3fbb1e0a661ff183af5" />
   </ItemGroup>
 
   <ItemGroup>
