@@ -4,7 +4,7 @@ using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Exceptions;
 using TwitchLib.Client.Interfaces;
-using TwitchLib.Client.Models;
+using TwitchLib.Communication.Events;
 using UnityEngine;
 
 namespace TwitchLib.Unity
@@ -15,213 +15,213 @@ namespace TwitchLib.Unity
         /// <summary>
         /// Fires when client connects to Twitch.
         /// </summary>
-        public new event EventHandler<TwitchLib.Client.Events.OnConnectedEventArgs> OnConnected;
+        public new event AsyncEventHandler<TwitchLib.Client.Events.OnConnectedEventArgs> OnConnected;
 
         /// <summary>
         /// Fires when client reconnects to Twitch.
         /// </summary>
-        public new event EventHandler<TwitchLib.Client.Events.OnConnectedEventArgs> OnReconnected;
+        public new event AsyncEventHandler<TwitchLib.Client.Events.OnConnectedEventArgs> OnReconnected;
 
         /// <summary>
         /// Fires when client joins a channel.
         /// </summary>
-        public new event EventHandler<OnJoinedChannelArgs> OnJoinedChannel;
+        public new event AsyncEventHandler<OnJoinedChannelArgs> OnJoinedChannel;
 
         /// <summary>
         /// Fires on logging in with incorrect details, returns ErrorLoggingInException.
         /// </summary>
-        public new event EventHandler<OnIncorrectLoginArgs> OnIncorrectLogin;
+        public new event AsyncEventHandler<OnIncorrectLoginArgs> OnIncorrectLogin;
 
         /// <summary>
         /// Fires when connecting and channel state is changed, returns ChannelState.
         /// </summary>
-        public new event EventHandler<OnChannelStateChangedArgs> OnChannelStateChanged;
+        public new event AsyncEventHandler<OnChannelStateChangedArgs> OnChannelStateChanged;
 
         /// <summary>
         /// Fires when a user state is received, returns UserState.
         /// </summary>
-        public new event EventHandler<OnUserStateChangedArgs> OnUserStateChanged;
+        public new event AsyncEventHandler<OnUserStateChangedArgs> OnUserStateChanged;
 
         /// <summary>
         /// Fires when a new chat message arrives, returns ChatMessage.
         /// </summary>
-        public new event EventHandler<OnMessageReceivedArgs> OnMessageReceived;
+        public new event AsyncEventHandler<OnMessageReceivedArgs> OnMessageReceived;
 
         /// <summary>
         /// Fires when a new whisper arrives, returns WhisperMessage.
         /// </summary>
-        public new event EventHandler<OnWhisperReceivedArgs> OnWhisperReceived;
+        public new event AsyncEventHandler<OnWhisperReceivedArgs> OnWhisperReceived;
 
         /// <summary>
         /// Fires when a chat message is sent, returns username, channel and message.
         /// </summary>
-        public new event EventHandler<OnMessageSentArgs> OnMessageSent;
+        public new event AsyncEventHandler<OnMessageSentArgs> OnMessageSent;
 
         /// <summary>
         /// Fires when command (uses custom chat command identifier) is received, returns channel, command, ChatMessage, arguments as string, arguments as list.
         /// </summary>
-        public new event EventHandler<OnChatCommandReceivedArgs> OnChatCommandReceived;
+        public new event AsyncEventHandler<OnChatCommandReceivedArgs> OnChatCommandReceived;
 
         /// <summary>
         /// Fires when command (uses custom whisper command identifier) is received, returns command, Whispermessage.
         /// </summary>
-        public new event EventHandler<OnWhisperCommandReceivedArgs> OnWhisperCommandReceived;
+        public new event AsyncEventHandler<OnWhisperCommandReceivedArgs> OnWhisperCommandReceived;
 
         /// <summary>
         /// Fires when a new viewer/chatter joined the channel's chat room, returns username and channel.
         /// </summary>
-        public new event EventHandler<OnUserJoinedArgs> OnUserJoined;
+        public new event AsyncEventHandler<OnUserJoinedArgs> OnUserJoined;
 
         /// <summary>
         /// Fires when new subscriber is announced in chat, returns Subscriber.
         /// </summary>
-        public new event EventHandler<OnNewSubscriberArgs> OnNewSubscriber;
+        public new event AsyncEventHandler<OnNewSubscriberArgs> OnNewSubscriber;
 
         /// <summary>
         /// Fires when current subscriber renews subscription, returns ReSubscriber.
         /// </summary>
-        public new event EventHandler<OnReSubscriberArgs> OnReSubscriber;
+        public new event AsyncEventHandler<OnReSubscriberArgs> OnReSubscriber;
 
         /// <summary>
         /// Fires when a current Prime gaming subscriber converts to a paid subscription.
         /// </summary>
-        public new event EventHandler<OnPrimePaidSubscriberArgs> OnPrimePaidSubscriber;
+        public new event AsyncEventHandler<OnPrimePaidSubscriberArgs> OnPrimePaidSubscriber;
 
         /// <summary>
         /// Fires when a current gifted subscriber converts to a paid subscription.
         /// </summary>
-        public new event EventHandler<OnContinuedGiftedSubscriptionArgs> OnContinuedGiftedSubscription;
+        public new event AsyncEventHandler<OnContinuedGiftedSubscriptionArgs> OnContinuedGiftedSubscription;
 
         /// <summary>
         /// Fires when Twitch notifies client of existing users in chat.
         /// </summary>
-        public new event EventHandler<OnExistingUsersDetectedArgs> OnExistingUsersDetected;
+        public new event AsyncEventHandler<OnExistingUsersDetectedArgs> OnExistingUsersDetected;
 
         /// <summary>
         /// Fires when a PART message is received from Twitch regarding a particular viewer
         /// </summary>
-        public new event EventHandler<OnUserLeftArgs> OnUserLeft;
+        public new event AsyncEventHandler<OnUserLeftArgs> OnUserLeft;
 
         /// <summary>
         /// Fires when bot has disconnected.
         /// </summary>
-        public new event EventHandler<OnDisconnectedEventArgs> OnDisconnected;
+        public new event AsyncEventHandler<OnDisconnectedEventArgs> OnDisconnected;
 
         /// <summary>
         /// Forces when bot suffers conneciton error.
         /// </summary>
-        public new event EventHandler<OnConnectionErrorArgs> OnConnectionError;
+        public new event AsyncEventHandler<OnConnectionErrorArgs> OnConnectionError;
 
         /// <summary>
         /// Fires when a channel's chat is cleared.
         /// </summary>
-        public new event EventHandler<OnChatClearedArgs> OnChatCleared;
+        public new event AsyncEventHandler<OnChatClearedArgs> OnChatCleared;
 
         /// <summary>
         /// Fires when a viewer gets timedout by any moderator.
         /// </summary>
-        public new event EventHandler<OnUserTimedoutArgs> OnUserTimedout;
+        public new event AsyncEventHandler<OnUserTimedoutArgs> OnUserTimedout;
 
         /// <summary>
         /// Fires when client successfully leaves a channel.
         /// </summary>
-        public new event EventHandler<OnLeftChannelArgs> OnLeftChannel;
+        public new event AsyncEventHandler<OnLeftChannelArgs> OnLeftChannel;
 
         /// <summary>
         /// Fires when a viewer gets banned by any moderator.
         /// </summary>
-        public new event EventHandler<OnUserBannedArgs> OnUserBanned;
+        public new event AsyncEventHandler<OnUserBannedArgs> OnUserBanned;
 
         /// <summary>
         /// Fires when a list of moderators is received.
         /// </summary>
-        public new event EventHandler<OnModeratorsReceivedArgs> OnModeratorsReceived;
+        public new event AsyncEventHandler<OnModeratorsReceivedArgs> OnModeratorsReceived;
 
         /// <summary>
         /// Fires when confirmation of a chat color change request was received.
         /// </summary>
-        public new event EventHandler<OnChatColorChangedArgs> OnChatColorChanged;
+        public new event AsyncEventHandler<OnChatColorChangedArgs> OnChatColorChanged;
 
         /// <summary>
         /// Fires when data is either received or sent.
         /// </summary>
-        public new event EventHandler<OnSendReceiveDataArgs> OnSendReceiveData;
+        public new event AsyncEventHandler<OnSendReceiveDataArgs> OnSendReceiveData;
 
         /// <summary>
         /// Fires when a raid notification is detected in chat
         /// </summary>
-        public new event EventHandler<OnRaidNotificationArgs> OnRaidNotification;
+        public new event AsyncEventHandler<OnRaidNotificationArgs> OnRaidNotification;
 
         /// <summary>
         /// Fires when a subscription is gifted and announced in chat
         /// </summary>
-        public new event EventHandler<OnGiftedSubscriptionArgs> OnGiftedSubscription;
+        public new event AsyncEventHandler<OnGiftedSubscriptionArgs> OnGiftedSubscription;
 
         /// <summary>Fires when TwitchClient attempts to host a channel it is in.</summary>
-        public new event EventHandler<NoticeEventArgs> OnSelfRaidError;
+        public new event AsyncEventHandler<NoticeEventArgs> OnSelfRaidError;
 
         /// <summary>Fires when TwitchClient receives generic no permission error from Twitch.</summary>
-        public new event EventHandler<NoticeEventArgs> OnNoPermissionError;
+        public new event AsyncEventHandler<NoticeEventArgs> OnNoPermissionError;
 
         /// <summary>Fires when newly raided channel is mature audience only.</summary>
-        public new event EventHandler<NoticeEventArgs> OnRaidedChannelIsMatureAudience;
+        public new event AsyncEventHandler<NoticeEventArgs> OnRaidedChannelIsMatureAudience;
 
         /// <summary>Fires when the client was unable to join a channel.</summary>
-        public new event EventHandler<OnFailureToReceiveJoinConfirmationArgs> OnFailureToReceiveJoinConfirmation;
+        public new event AsyncEventHandler<OnFailureToReceiveJoinConfirmationArgs> OnFailureToReceiveJoinConfirmation;
 
         /// <summary>Fires when data is received from Twitch that is not able to be parsed.</summary>
-        public new event EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
+        public new event AsyncEventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
 
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnMessageClearedArgs> OnMessageCleared;
+        public new event AsyncEventHandler<OnMessageClearedArgs> OnMessageCleared;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnCommunitySubscriptionArgs> OnCommunitySubscription;
+        public new event AsyncEventHandler<OnCommunitySubscriptionArgs> OnCommunitySubscription;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnErrorEventArgs> OnError;
+        public new event AsyncEventHandler<OnErrorEventArgs> OnError;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnVIPsReceivedArgs> OnVIPsReceived;
+        public new event AsyncEventHandler<OnVIPsReceivedArgs> OnVIPsReceived;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnAnnouncementArgs> OnAnnouncement;
+        public new event AsyncEventHandler<OnAnnouncementArgs> OnAnnouncement;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnMessageThrottledArgs> OnMessageThrottled;
+        public new event AsyncEventHandler<OnMessageThrottledArgs> OnMessageThrottled;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<NoticeEventArgs> OnRequiresVerifiedPhoneNumber;
+        public new event AsyncEventHandler<NoticeEventArgs> OnRequiresVerifiedPhoneNumber;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<NoticeEventArgs> OnFollowersOnly;
+        public new event AsyncEventHandler<NoticeEventArgs> OnFollowersOnly;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<NoticeEventArgs> OnSubsOnly;
+        public new event AsyncEventHandler<NoticeEventArgs> OnSubsOnly;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<NoticeEventArgs> OnEmoteOnly;
+        public new event AsyncEventHandler<NoticeEventArgs> OnEmoteOnly;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<NoticeEventArgs> OnSuspended;
+        public new event AsyncEventHandler<NoticeEventArgs> OnSuspended;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<NoticeEventArgs> OnBanned;
+        public new event AsyncEventHandler<NoticeEventArgs> OnBanned;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<NoticeEventArgs> OnSlowMode;
+        public new event AsyncEventHandler<NoticeEventArgs> OnSlowMode;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<NoticeEventArgs> OnR9kMode;
+        public new event AsyncEventHandler<NoticeEventArgs> OnR9kMode;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnUserIntroArgs> OnUserIntro;
+        public new event AsyncEventHandler<OnUserIntroArgs> OnUserIntro;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnAnonGiftPaidUpgradeArgs> OnAnonGiftPaidUpgrade;
+        public new event AsyncEventHandler<OnAnonGiftPaidUpgradeArgs> OnAnonGiftPaidUpgrade;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnUnraidNotificationArgs> OnUnraidNotification;
+        public new event AsyncEventHandler<OnUnraidNotificationArgs> OnUnraidNotification;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnRitualArgs> OnRitual;
+        public new event AsyncEventHandler<OnRitualArgs> OnRitual;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnBitsBadgeTierArgs> OnBitsBadgeTier;
+        public new event AsyncEventHandler<OnBitsBadgeTierArgs> OnBitsBadgeTier;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnCommunityPayForwardArgs> OnCommunityPayForward;
+        public new event AsyncEventHandler<OnCommunityPayForwardArgs> OnCommunityPayForward;
         /// <summary>Fires when named event occurs.</summary>
-        public new event EventHandler<OnStandardPayForwardArgs> OnStandardPayForward;
+        public new event AsyncEventHandler<OnStandardPayForwardArgs> OnStandardPayForward;
         #endregion
 
         public Client() : base(null)
         {
             ThreadDispatcher.EnsureCreated();
 
-            base.OnConnected += (object sender, OnConnectedEventArgs e) => { ThreadDispatcher.Enqueue(() => OnConnected?.Invoke(sender, e)); return Task.CompletedTask; };
-            base.OnReconnected += (object sender, OnConnectedEventArgs e) => { ThreadDispatcher.Enqueue(() => OnReconnected?.Invoke(sender, e)); return Task.CompletedTask; };
+            base.OnConnected += (object sender, TwitchLib.Client.Events.OnConnectedEventArgs e) => { ThreadDispatcher.Enqueue(() => OnConnected?.Invoke(sender, e)); return Task.CompletedTask; };
+            base.OnReconnected += (object sender, TwitchLib.Client.Events.OnConnectedEventArgs e) => { ThreadDispatcher.Enqueue(() => OnReconnected?.Invoke(sender, e)); return Task.CompletedTask; };
             base.OnJoinedChannel += (object sender, OnJoinedChannelArgs e) => { ThreadDispatcher.Enqueue(() => OnJoinedChannel?.Invoke(sender, e)); return Task.CompletedTask; };
             base.OnIncorrectLogin += (object sender, OnIncorrectLoginArgs e) => { ThreadDispatcher.Enqueue(() => OnIncorrectLogin?.Invoke(sender, e)); return Task.CompletedTask; };
             base.OnChannelStateChanged += (object sender, OnChannelStateChangedArgs e) => { ThreadDispatcher.Enqueue(() => OnChannelStateChanged?.Invoke(sender, e)); return Task.CompletedTask; };
